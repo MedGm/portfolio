@@ -10,8 +10,9 @@ function About() {
 
   const achievements = [
     "First Year Engineering Student in Software and Intelligent Systems",
-    "Experience with Full-Stack Development",
-    "Game Development Enthusiast",
+    "Experience with Full-Stack Development (MERN & MEAN Stack)",
+    "Game Development with Unity",
+    "TypeScript and Angular Application Development",
     "Strong foundation in Data Structures and Algorithms"
   ];
 

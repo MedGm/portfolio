@@ -9,10 +9,12 @@ function TechScroll() {
         { name: "HTML5", src: techIcons.html5 },
         { name: "CSS3", src: techIcons.css3 },
         { name: "JavaScript", src: techIcons.javascript },
+        { name: "TypeScript", src: techIcons.typescript },
         { name: "Python", src: techIcons.python },
         { name: "C++", src: techIcons.cpp },
         { name: "Java", src: techIcons.java },
         { name: "React", src: techIcons.react },
+        { name: "Angular", src: techIcons.angular },
         { name: "Symfony", src: techIcons.symfony }
       ]
     },
@@ -23,8 +25,9 @@ function TechScroll() {
         { name: "GitHub", src: techIcons.github },
         { name: "VS Code", src: techIcons.vscode },
         { name: "IntelliJ", src: techIcons.intellij },
-        { name: "Unreal Engine", src: techIcons.unreal },
-        { name: "Docker", src: techIcons.docker },
+        { name: "Unity", src: techIcons.unity },
+        { name: "Node.js", src: techIcons.nodejs },
+        { name: "Express.js", src: techIcons.expressjs },
         { name: "Bootstrap", src: techIcons.bootstrap },
         { name: "Tailwind", src: techIcons.tailwind }
       ]
