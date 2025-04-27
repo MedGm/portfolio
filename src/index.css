@@ -129,6 +129,37 @@ button:focus, button:focus-visible, .button:focus, .button:focus-visible {
   p {
     @apply text-gray-300 leading-relaxed max-w-2xl mx-auto;
   }
+
+  /* Disable text selection globally */
+  html, body {
+    @apply select-none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+  
+  /* Allow selection in specific elements that need it */
+  input, textarea, [contenteditable="true"] {
+    @apply select-text;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+
+  /* Global link styling */
+  a {
+    @apply transition-all duration-300;
+    outline: none !important;
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    @apply outline-none ring-2 ring-blue-500 ring-opacity-50;
+  }
 }
 
 @layer components {
@@ -257,12 +288,9 @@ button:focus, button:focus-visible, .button:focus, .button:focus-visible {
   }
 
   .text-gradient-animated {
-    @apply text-transparent bg-clip-text;
-    background-image: linear-gradient(to right, 
-      #3b82f6, #8b5cf6, #d946ef, #8b5cf6, #3b82f6
-    );
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-400;
     background-size: 200% auto;
-    animation: text-shimmer 5s linear infinite;
+    animation: gradient-shift 8s ease infinite;
   }
   
   .text-shine {
@@ -288,34 +316,212 @@ button:focus, button:focus-visible, .button:focus, .button:focus-visible {
   }
   
   .glass-morphism-enhanced {
-    @apply backdrop-blur-lg bg-white/[0.03] border border-white/10 rounded-xl;
-    box-shadow: 
-      0 10px 30px -10px rgba(0, 0, 0, 0.3),
-      0 0 20px rgba(0, 243, 255, 0.05),
-      inset 0 0 20px rgba(0, 243, 255, 0.025);
+    @apply bg-slate-900/60 backdrop-blur-md border border-slate-800/80;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
   }
   
   .glass-morphism-enhanced:hover {
-    @apply border-white/20 bg-white/[0.05];
-    box-shadow: 
-      0 20px 40px -20px rgba(0, 0, 0, 0.5),
-      0 0 30px rgba(0, 243, 255, 0.1),
-      inset 0 0 30px rgba(0, 243, 255, 0.05);
+    @apply border-slate-700/80;
+    box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.2), 0 10px 20px -6px rgba(0, 0, 0, 0.2);
   }
+
+  /* Animation utilities for draggable elements */
+  .draggable {
+    @apply cursor-grab active:cursor-grabbing hover:shadow-neon-light;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  }
+  
+  .draggable:hover {
+    @apply shadow-neon-medium;
+  }
+  
+  /* Certificate and achievement styles */
+  .achievement-card {
+    @apply glass-morphism relative overflow-hidden;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  }
+  
+  .achievement-card:hover {
+    @apply transform scale-[1.02] shadow-neon-medium;
+  }
+  
+  /* Shine effect animation */
+  .shine-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .shine-effect::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: skewX(-25deg);
+  }
+  
+  .shine-effect:hover::after {
+    animation: shine 1s;
+  }
+
+  /* Enhanced glass morphism with depth */
+  .glass-morphism-enhanced-depth {
+    @apply bg-slate-900/60 backdrop-blur-md border border-slate-800/80;
+    box-shadow: 
+      0 10px 25px -5px rgba(0, 0, 0, 0.15), 
+      0 8px 10px -6px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(59, 130, 246, 0.05) inset;
+    transition: all 0.3s ease;
+  }
+
+  .glass-morphism-enhanced-depth:hover {
+    @apply border-slate-700/80;
+    box-shadow: 
+      0 15px 30px -8px rgba(0, 0, 0, 0.25), 
+      0 10px 20px -6px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(59, 130, 246, 0.1) inset;
+  }
+}
+
+/* Custom cursor interactions */
+@layer utilities {
+  .cursor-none {
+    cursor: none;
+  }
+  
+  .cursor-grab-custom {
+    cursor: grab;
+  }
+  
+  .cursor-grabbing-custom {
+    cursor: grabbing;
+  }
+  
+  .cursor-pointer-custom {
+    cursor: pointer;
+  }
+}
+
+/* Enhanced animation utilities */
+@layer utilities {
+  .animated-gradient-bg {
+    background-size: 200% 200%;
+    animation: gradient-shift 8s ease infinite;
+  }
+  
+  .shine-effect {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .shine-effect::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transform: skewX(-25deg);
+  }
+  
+  .shine-effect:hover::after {
+    animation: shine 1s;
+  }
+  
+  .pulse-glow {
+    animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+/* Performance optimizations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.performance-gpu {
+  transform: translateZ(0);
+}
+
+/* Optimize animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-float-slow {
+  animation: float 12s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-float-slower {
+  animation: float 15s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Use CSS animations instead of JS where possible */
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Reduce animation complexity */
+.text-gradient-animated {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-400;
+  background-size: 200% auto;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Optimize will-change for specific elements */
+.scroll-animation {
+  will-change: transform, opacity;
+}
+
+/* Force hardware acceleration for certain elements */
+.hardware-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
 }
 
 /* Animations */
 @keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+   0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 @keyframes shine {
   0% { left: -100%; }
   20% { left: 100%; }
   100% { left: 100%; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
+  }
 }
 
 @keyframes gradient-x {
@@ -329,9 +535,8 @@ button:focus, button:focus-visible, .button:focus, .button:focus-visible {
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
+   0%, 100% { transform: translateY(0px); }
+   50% { transform: translateY(-20px); }
 }
 
 .animate-float {
@@ -343,25 +548,88 @@ button:focus, button:focus-visible, .button:focus, .button:focus-visible {
   100% { background-position: 100% 50%; }
 }
 
+@keyframes border-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(99, 102, 241, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+.animate-border-pulse {
+  animation: border-pulse 2s infinite;
+}
+
 .perspective-tilt {
   transform-style: preserve-3d;
   perspective: 1000px;
 }
 
+/* Animation delays for staggered effects */
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Enhanced blob animation */
+@keyframes blob {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  25% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+  50% {
+    border-radius: 40% 60% 30% 70% / 70% 30% 50% 40%;
+  }
+  75% {
+    border-radius: 60% 40% 70% 30% / 40% 50% 60% 70%;
+  }
+}
+
+.animate-blob {
+  animation: blob 7s ease-in-out infinite;
+}
+
+/* Touch device adjustments */
+@media (pointer: coarse) {
+  .cursor-none {
+    cursor: auto;
+  }
+  
+  .cursor-grab-custom {
+    cursor: auto;
+  }
+  
+  .cursor-grabbing-custom {
+    cursor: auto;
+  }
+  
+  .cursor-pointer-custom {
+    cursor: auto;
+  }
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--darker-bg);
+  @apply bg-slate-900;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(var(--neon-blue), var(--neon-purple));
-  border-radius: 4px;
+  @apply bg-gradient-to-b from-blue-500 to-purple-600 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(var(--neon-purple), var(--neon-pink));
+  @apply bg-gradient-to-b from-blue-400 to-purple-500;
 }

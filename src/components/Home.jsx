@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect, useMemo } from 'react';
 
 function Home() {
   const [isHovered, setIsHovered] = useState(false);
@@ -10,11 +10,36 @@ function Home() {
     offset: ["start start", "end start"]
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8]);
-  const y = useTransform(scrollYProgress, [0, 0.5], [0, 100]);
+  // Enhanced scroll animations
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.3], [1, 0.9]);
+  const y = useTransform(scrollYProgress, [0, 0.3], [0, 100]);
+  
+  // Track mouse position for interactive effects
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  // Optimize mouse movement tracking with throttling
+  useEffect(() => {
+    let lastUpdateTime = 0;
+    const THROTTLE_MS = 50; // Only update every 50ms
+    
+    const handleMouseMove = (e) => {
+      const now = Date.now();
+      if (now - lastUpdateTime < THROTTLE_MS) return;
+      
+      lastUpdateTime = now;
+      setMousePosition({
+        x: e.clientX / window.innerWidth,
+        y: e.clientY / window.innerHeight
+      });
+    };
+    
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
-  const roles = [
+  // Memoize constants to prevent recreation on re-renders
+  const roles = useMemo(() => [
     'Software Engineering Student',
     2000,
     'Full Stack Developer',
@@ -23,15 +48,19 @@ function Home() {
     2000,
     'AI & ML Explorer',
     2000,
-  ];
+    'Hackathon Award Winner',
+    2000,
+  ], []);
 
-  const codeSnippets = [
+  // Only render code particles when hovered to reduce initial load
+  const codeSnippets = useMemo(() => [
     { text: "const developer = new Developer('Mohamed');", color: "#61dafb", direction: 1 },
     { text: "while(true) { learn(); code(); repeat(); }", color: "#38bdf8", direction: -1 },
     { text: "if(coffee.isEmpty()) { refill(); }", color: "#818cf8", direction: 1 },
     { text: "git commit -m 'Always coding'", color: "#a78bfa", direction: -1 }
-  ];
+  ], []);
 
+  // Enhanced code particle with better animations
   const CodeParticle = ({ text, color, index, direction }) => (
     <motion.div
       initial={{ 
@@ -68,61 +97,69 @@ function Home() {
     </motion.div>
   );
 
+  // Split the background animation into a separate component
+  const BackgroundEffect = () => (
+    <div className="absolute inset-0 -z-10">
+      {/* Base gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-dark-light to-black/90" />
+      
+      {/* Optimized grid */}
+      <div className="absolute inset-0 opacity-20">
+        <div className="h-full w-full" 
+          style={{ 
+            backgroundImage: `radial-gradient(rgba(59, 130, 246, 0.15) 1px, transparent 1px)`, 
+            backgroundSize: '40px 40px',
+            backgroundPosition: `${mousePosition.x * 10}px ${mousePosition.y * 10}px`
+          }}
+        />
+      </div>
+      
+      {/* Reduced number of orbs */}
+      {[...Array(3)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="rounded-full absolute will-change-transform"
+          animate={{
+            opacity: [0.2, 0.1, 0.2],
+            scale: [1, 1.1, 1],
+            x: [0, 30 * (i % 2 === 0 ? 1 : -1), 0],
+            y: [0, 20 * (i % 3 === 0 ? 1 : -1), 0],
+          }}
+          transition={{
+            duration: 8 + i * 3,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: i * 2,
+          }}
+          style={{
+            top: `${40 + i * 20}%`,
+            left: `${25 + i * 20}%`,
+            width: `${200 + i * 50}px`,
+            height: `${200 + i * 50}px`,
+            filter: 'blur(80px)',
+            background: `linear-gradient(45deg, 
+              rgba(${59 + i * 10}, ${130 - i * 15}, 246, 0.${3 + i}), 
+              rgba(${147 - i * 10}, ${51 + i * 10}, 234, 0.${3 + i})
+            )`,
+          }}
+        />
+      ))}
+    </div>
+  );
+
   return (
     <motion.div
       ref={containerRef}
-      className="h-screen flex items-center justify-center px-6 relative overflow-hidden"
+      id="home"
+      className="min-h-screen flex items-center justify-center px-6 relative overflow-hidden"
       style={{ opacity, scale, y }}
     >
-      {/* Enhanced Background Effects */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/30 to-black/50" />
-        
-        {/* Dynamic background grid */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="h-full w-full" 
-               style={{ 
-                 backgroundImage: `radial-gradient(rgba(59, 130, 246, 0.15) 1px, transparent 1px)`, 
-                 backgroundSize: '40px 40px'
-               }}
-          />
-        </div>
-        
-        {/* Animated gradient orbs */}
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="rounded-full absolute"
-            animate={{
-              opacity: [0.3, 0.15, 0.3],
-              scale: [1, 1.2, 1],
-              x: [0, 50 * (i % 2 === 0 ? 1 : -1), 0],
-              y: [0, 30 * (i % 3 === 0 ? 1 : -1), 0],
-            }}
-            transition={{
-              duration: 8 + i * 2,
-              repeat: Infinity,
-              delay: i * 1.5,
-            }}
-            style={{
-              top: `${30 + i * 15}%`,
-              left: `${20 + i * 15}%`,
-              width: `${200 + i * 50}px`,
-              height: `${200 + i * 50}px`,
-              filter: 'blur(80px)',
-              background: `linear-gradient(45deg, 
-                rgba(${59 + i * 10}, ${130 - i * 15}, 246, 0.${3 + i}), 
-                rgba(${147 - i * 10}, ${51 + i * 10}, 234, 0.${3 + i})
-              )`,
-            }}
-          />
-        ))}
-      </div>
+      <BackgroundEffect />
 
       <div className="max-w-4xl mx-auto flex flex-col items-center gap-12 relative z-10">
-        {/* Profile Image with Enhanced Effects */}
+        {/* Optimized profile image animation */}
         <motion.div
-          className="relative"
+          className="relative hardware-accelerated"
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           whileHover={{ scale: 1.1 }}
@@ -131,23 +168,23 @@ function Home() {
           transition={{ type: "spring", stiffness: 300, damping: 15 }}
         >
           <div className="relative w-48 h-48">
-            {/* Animated glow ring */}
+            {/* Enhanced animated glow ring with better gradient colors */}
             <motion.div
-              className="absolute -inset-4 rounded-full opacity-80"
+              className="absolute -inset-4 rounded-full opacity-90"
               animate={{
                 background: [
-                  'linear-gradient(0deg, rgba(59,130,246,0.5), rgba(147,51,234,0.5))',
-                  'linear-gradient(120deg, rgba(59,130,246,0.5), rgba(236,72,153,0.5))',
-                  'linear-gradient(240deg, rgba(59,130,246,0.5), rgba(147,51,234,0.5))',
-                  'linear-gradient(360deg, rgba(59,130,246,0.5), rgba(236,72,153,0.5))',
+                  'conic-gradient(from 0deg, rgba(59,130,246,0.6), rgba(139,92,246,0.6), rgba(236,72,153,0.6), rgba(59,130,246,0.6))',
+                  'conic-gradient(from 120deg, rgba(59,130,246,0.6), rgba(139,92,246,0.6), rgba(236,72,153,0.6), rgba(59,130,246,0.6))',
+                  'conic-gradient(from 240deg, rgba(59,130,246,0.6), rgba(139,92,246,0.6), rgba(236,72,153,0.6), rgba(59,130,246,0.6))',
+                  'conic-gradient(from 360deg, rgba(59,130,246,0.6), rgba(139,92,246,0.6), rgba(236,72,153,0.6), rgba(59,130,246,0.6))',
                 ],
                 rotate: [0, 360]
               }}
               transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
             />
             
-            {/* Image container */}
-            <div className="relative z-10 rounded-full overflow-hidden w-full h-full border-4 border-white/10">
+            {/* Enhanced image container with better border */}
+            <div className="relative z-10 rounded-full overflow-hidden w-full h-full border-[3px] border-white/15">
               <motion.div 
                 className="w-full h-full"
                 animate={{
@@ -168,21 +205,23 @@ function Home() {
               </motion.div>
             </div>
             
-            {/* Code Snippets Container */}
-            <div className="absolute inset-0 flex items-center justify-center overflow-visible">
-              {codeSnippets.map((snippet, index) => (
-                <CodeParticle
-                  key={index}
-                  text={snippet.text}
-                  color={snippet.color}
-                  index={index}
-                  direction={snippet.direction}
-                />
-              ))}
-            </div>
+            {/* Only render code particles when hovered */}
+            {isHovered && (
+              <div className="absolute inset-0 flex items-center justify-center overflow-visible">
+                {codeSnippets.map((snippet, index) => (
+                  <CodeParticle
+                    key={index}
+                    text={snippet.text}
+                    color={snippet.color}
+                    index={index}
+                    direction={snippet.direction}
+                  />
+                ))}
+              </div>
+            )}
           </div>
           
-          {/* Animated shadow effect */}
+          {/* Enhanced shadow effect with better animation */}
           <motion.div
             className="absolute inset-0 rounded-full"
             animate={isHovered ? {
@@ -202,7 +241,7 @@ function Home() {
           />
         </motion.div>
 
-        {/* Text Content with Enhanced Animations */}
+        {/* Enhanced Text Content with Better Typography */}
         <motion.div
           className="text-center space-y-8"
           initial={{ opacity: 0, y: 20 }}
@@ -238,7 +277,7 @@ function Home() {
               >
                 <span className="text-gradient-animated">El Gorrim</span>
                 <motion.span
-                  className="absolute bottom-0 left-0 right-0 h-1 rounded bg-gradient-to-r from-blue-500 to-purple-600"
+                  className="absolute bottom-0 left-0 right-0 h-1 rounded bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
                   initial={{ scaleX: 0 }}
                   animate={{ scaleX: 1 }}
                   transition={{ delay: 0.8, duration: 0.8 }}
@@ -246,6 +285,7 @@ function Home() {
               </motion.span>
             </h1>
             
+            {/* Enhanced type animation with better styling */}
             <motion.div 
               className="h-20 mt-6"
               initial={{ opacity: 0 }}
@@ -261,21 +301,26 @@ function Home() {
             </motion.div>
           </div>
 
-          {/* Call-to-Action Buttons */}
+          {/* Enhanced CTA Buttons with better visual design */}
           <motion.div
             className="flex flex-wrap items-center justify-center gap-6 pt-6"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.9 }}
           >
+            {/* GitHub button with enhanced glass effect */}
             <motion.a
               href="https://github.com/MedGm"
               target="_blank"
               rel="noopener noreferrer"
               className="glass-morphism-enhanced group px-8 py-4 hover:scale-105 transition-all min-w-[200px] relative overflow-hidden flex items-center justify-center"
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ 
+                scale: 1.05,
+                boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)"
+              }}
               whileTap={{ scale: 0.95 }}
             >
+              {/* Enhanced animation effect */}
               <motion.div
                 className="absolute inset-0 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10"
                 animate={{
@@ -288,6 +333,7 @@ function Home() {
                   ease: "linear"
                 }}
               />
+              {/* Enhanced GitHub icon */}
               <svg className="w-6 h-6 mr-2 text-gray-300 group-hover:text-blue-400 transition-colors" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
               </svg>
@@ -296,24 +342,63 @@ function Home() {
               </span>
             </motion.a>
             
+            {/* Contact Me button with enhanced gradient animation */}
             <motion.a 
               href="#contact"
               className="relative overflow-hidden min-w-[200px] px-8 py-4 rounded-full font-semibold flex items-center justify-center"
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ 
+                scale: 1.05,
+                boxShadow: "0 0 25px rgba(139, 92, 246, 0.5)"
+              }}
               whileTap={{ scale: 0.95 }}
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 animate-gradient-x"></span>
+              {/* Enhanced gradient background with animation */}
+              <motion.span 
+                className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600"
+                animate={{
+                  backgroundPosition: ['0% 0%', '100% 100%'],
+                }}
+                transition={{ 
+                  duration: 3,
+                  repeat: Infinity, 
+                  repeatType: "mirror"
+                }}
+                style={{ backgroundSize: '200% 200%' }}
+              />
               <span className="absolute inset-0.5 bg-black rounded-full"></span>
               <span className="relative z-10 text-xl flex items-center">
                 Contact Me
-                <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <motion.svg 
+                  className="w-5 h-5 ml-2" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ 
+                    repeat: Infinity, 
+                    repeatType: "loop", 
+                    duration: 1.5,
+                    repeatDelay: 1
+                  }}
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                </svg>
+                </motion.svg>
               </span>
             </motion.a>
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Scroll indicator */}
+      <motion.div 
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+        animate={{ y: [0, 10, 0] }}
+        transition={{ repeat: Infinity, duration: 1.5 }}
+      >
+        <svg className="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
+      </motion.div>
     </motion.div>
   );
 }
