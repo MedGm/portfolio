@@ -4,10 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Show button when page is scrolled down
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 400) {
+      if (window.scrollY > 300) {
         setIsVisible(true);
       } else {
         setIsVisible(false);
@@ -15,11 +14,9 @@ function ScrollToTop() {
     };
 
     window.addEventListener('scroll', toggleVisibility);
-
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  // Scroll to top handler with smooth behavior
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -32,39 +29,53 @@ function ScrollToTop() {
       {isVisible && (
         <motion.button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-900/20 focus:outline-none"
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.5 }}
+          className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 p-4 rounded-xl focus:outline-none font-mono border-2 border-cyan-400/30 hover:border-cyan-400 shadow-lg hover:shadow-cyan-500/25 group"
+          initial={{ opacity: 0, scale: 0.5, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.5, y: 20 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
           whileHover={{ 
             scale: 1.1,
-            boxShadow: "0 0 20px rgba(59, 130, 246, 0.5)"
+            boxShadow: "0 10px 40px rgba(6, 182, 212, 0.4)"
           }}
           whileTap={{ scale: 0.9 }}
           aria-label="Scroll to top"
         >
-          {/* Enhanced arrow up icon with animation */}
-          <motion.svg 
-            className="w-6 h-6" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="currentColor"
-            animate={{ y: [0, -3, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-          </motion.svg>
-          
-          {/* Subtle ripple effect */}
-          <div className="absolute inset-0 -z-10 rounded-full overflow-hidden">
-            <motion.div 
-              className="absolute inset-0 bg-white/10"
-              initial={{ scale: 0, opacity: 1 }}
-              animate={{ scale: 2, opacity: 0 }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            />
+          {/* Enhanced content */}
+          <div className="flex items-center gap-2">
+            <span className="text-white text-xs">$</span>
+            <span className="text-white text-xs hidden sm:inline">top</span>
+            
+            {/* Enhanced arrow */}
+            <motion.svg 
+              className="w-5 h-5 text-white" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor"
+              animate={{ y: [0, -3, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+            </motion.svg>
           </div>
+          
+          {/* Enhanced scan line effect */}
+          <motion.div 
+            className="absolute inset-0 -z-10 rounded-xl overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            <motion.div 
+              className="absolute top-0 left-0 right-0 h-px bg-white/30"
+              animate={{ x: [-100, 100] }}
+              transition={{ 
+                duration: 2, 
+                repeat: Infinity, 
+                repeatType: "loop",
+                ease: "linear" 
+              }}
+            />
+          </motion.div>
         </motion.button>
       )}
     </AnimatePresence>

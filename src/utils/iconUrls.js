@@ -17,5 +17,6 @@ export const techIcons = {
   intellij: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/intellij/intellij-original.svg",
   unity: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/unity/unity-original.svg",
   nodejs: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
-  expressjs: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg"
+  expressjs: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg",
+  blocked: "https://img.icons8.com/?size=100&id=Xm8b3LopDIkV&format=png&color=000000"
 };

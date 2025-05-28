@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 function Contact() {
   const [formState, setFormState] = useState({
@@ -17,25 +18,29 @@ function Contact() {
       title: "Email",
       value: "elgorrim.mohamed@etu.uae.ac.ma",
       icon: "📧",
+      command: "mail -s 'Subject' user@domain.com",
       link: "mailto:elgorrim.mohamed@etu.uae.ac.ma"
     },
     {
       title: "Phone",
       value: "+212 644246223",
       icon: "📱",
+      command: "call +212644246223",
       link: "tel:+212644246223"
     },
     {
       title: "Location",
-      value: "Av Rif NR 88 Khandak Zerbouh Tétouan, Morocco",
-      icon: "📍",
+      value: "Tétouan, Morocco",
+      icon: "📍", 
+      command: "cd /home/morocco/tetouan",
       link: "https://goo.gl/maps/..."
     },
     {
-      title: "LinkedIn",
-      value: "Mohamed El Gorrim",
-      icon: "💼",
-      link: "https://linkedin.com/in/..."
+      title: "GitHub",
+      value: "github.com/MedGm",
+      icon: "💻",
+      command: "git clone github.com/MedGm",
+      link: "https://github.com/MedGm"
     }
   ];
 
@@ -60,7 +65,7 @@ function Contact() {
     } catch (error) {
       setFormState(prev => ({ 
         ...prev, 
-        error: 'Failed to send message. Please try again.',
+        error: 'Connection failed. Please try again.',
         submitting: false
       }));
       
@@ -70,19 +75,20 @@ function Contact() {
     }
   };
 
-  const Input = ({ label, type, value, onChange, disabled, required, textArea = false }) => {
+  const TerminalInput = ({ label, type, value, onChange, disabled, required, textArea = false }) => {
     const [isFocused, setIsFocused] = useState(false);
     
     return (
       <div className="relative">
         <motion.label 
-          className={`absolute left-4 transition-all duration-200 pointer-events-none ${
+          className={`absolute left-4 transition-all duration-200 pointer-events-none font-mono ${
             isFocused || value 
-              ? 'text-xs text-blue-400 top-2' 
-              : 'text-base text-gray-400 top-1/2 -translate-y-1/2'
+              ? 'text-xs text-terminal-500 top-2' 
+              : 'text-base text-console-500 top-1/2 -translate-y-1/2'
           }`}
         >
-          {label} {required && <span className="text-blue-400">*</span>}
+          <span className="text-ubuntu-500">$ </span>
+          {label} {required && <span className="text-hacker-500">*</span>}
         </motion.label>
         
         {textArea ? (
@@ -91,12 +97,13 @@ function Contact() {
             onChange={onChange}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            className={`w-full bg-slate-800/50 rounded-lg border ${
-              isFocused ? 'border-blue-500' : 'border-gray-700'
-            } text-base outline-none text-gray-300 py-5 px-4 transition-colors min-h-[150px] pt-7`}
+            className={`w-full bg-dark/50 rounded-lg border font-mono ${
+              isFocused ? 'border-terminal-500 shadow-terminal' : 'border-console-500'
+            } text-base outline-none text-matrix-500 py-5 px-4 transition-all min-h-[150px] pt-7 backdrop-blur-sm`}
             disabled={disabled}
             required={required}
             style={{ resize: 'none' }}
+            placeholder={isFocused ? '# Type your message here...' : ''}
           />
         ) : (
           <input
@@ -105,9 +112,9 @@ function Contact() {
             onChange={onChange}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
-            className={`w-full bg-slate-800/50 rounded-lg border ${
-              isFocused ? 'border-blue-500' : 'border-gray-700'
-            } text-base outline-none text-gray-300 py-5 px-4 transition-colors pt-7`}
+            className={`w-full bg-dark/50 rounded-lg border font-mono ${
+              isFocused ? 'border-terminal-500 shadow-terminal' : 'border-console-500'
+            } text-base outline-none text-matrix-500 py-5 px-4 transition-all pt-7 backdrop-blur-sm`}
             disabled={disabled}
             required={required}
           />
@@ -116,248 +123,325 @@ function Contact() {
     );
   };
 
+  TerminalInput.propTypes = {
+    label: PropTypes.string.isRequired,
+    type: PropTypes.string,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    disabled: PropTypes.bool,
+    required: PropTypes.bool,
+    textArea: PropTypes.bool
+  };
+
+  TerminalInput.defaultProps = {
+    type: 'text',
+    disabled: false,
+    required: false,
+    textArea: false
+  };
+
   return (
-    <div id="contact" className="min-h-screen flex items-center justify-center px-6 py-20 select-none">
-      <div className="max-w-4xl w-full mx-auto">
+    <section id="contact" className="min-h-screen py-28 relative overflow-hidden select-none bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
+      {/* Footer-style background effects */}
+      <div className="absolute inset-0 -z-10">
+        {/* Footer-style matrix grid */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="h-full w-full" 
+            style={{ 
+              backgroundImage: `linear-gradient(to right, rgba(6, 182, 212, 0.1) 1px, transparent 1px),
+                               linear-gradient(to bottom, rgba(6, 182, 212, 0.1) 1px, transparent 1px)`, 
+              backgroundSize: '30px 30px'
+            }}
+          />
+        </div>
+        
+        {/* Footer-style floating particles */}
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 rounded-full"
+            animate={{
+              y: [0, -30, 0],
+              opacity: [0.3, 0.8, 0.3],
+              scale: [1, 1.5, 1],
+            }}
+            transition={{
+              duration: 8 + i,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: i * 1.5,
+            }}
+            style={{
+              top: `${20 + i * 10}%`,
+              left: `${10 + i * 10}%`,
+              background: i % 3 === 0 ? '#06b6d4' : i % 3 === 1 ? '#10b981' : '#8b5cf6',
+              boxShadow: `0 0 15px ${i % 3 === 0 ? '#06b6d4' : i % 3 === 1 ? '#10b981' : '#8b5cf6'}`,
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Enhanced header */}
         <motion.div
+          className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="space-y-12"
+          transition={{ duration: 0.6 }}
         >
-          <div className="text-center space-y-4">
-            <motion.h2 
-              className="text-5xl font-bold relative inline-block"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <span className="text-gradient-animated">
-                Let's Connect
-              </span>
-              <motion.div 
-                className="absolute -bottom-2 left-0 right-0 h-1 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
-                initial={{ scaleX: 0, originX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3, duration: 0.8 }}
-              />
-            </motion.h2>
-            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Have a question or want to work together?
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            <motion.form
-              ref={formRef}
-              onSubmit={handleSubmit}
-              className="glass-morphism-enhanced p-8 rounded-xl space-y-6 relative overflow-hidden"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold mb-4 relative inline-block font-mono"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <span className="text-orange-400">$ </span>
+            <span className="bg-gradient-to-r from-cyan-400 via-emerald-400 to-purple-400 bg-clip-text text-transparent">./contact --init</span>
+            <span className="text-cyan-400 animate-pulse">_</span>
             
-              <div className="space-y-6">
-                <Input
-                  label="Name"
-                  type="text"
-                  value={formState.name}
-                  onChange={e => setFormState(prev => ({ ...prev, name: e.target.value }))}
-                  disabled={formState.submitting}
-                  required
-                />
-                
-                <Input
-                  label="Email"
-                  type="email"
-                  value={formState.email}
-                  onChange={e => setFormState(prev => ({ ...prev, email: e.target.value }))}
-                  disabled={formState.submitting}
-                  required
-                />
-                
-                <Input
-                  label="Message"
-                  value={formState.message}
-                  onChange={e => setFormState(prev => ({ ...prev, message: e.target.value }))}
-                  disabled={formState.submitting}
-                  required
-                  textArea
-                />
-              </div>
+            <motion.div 
+              className="absolute -bottom-2 left-0 right-0 h-1 rounded-full bg-gradient-to-r from-cyan-500 via-emerald-500 to-purple-500"
+              initial={{ scaleX: 0, originX: 0 }}
+              whileInView={{ scaleX: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+            />
+          </motion.h2>
+          <p className="text-xl text-slate-400 max-w-3xl mx-auto font-mono">
+            <span className="text-cyan-400"># </span>
+            Let&apos;s connect and build something amazing together
+          </p>
+        </motion.div>
 
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Footer-style contact form */}
+          <motion.div
+            className="p-8 rounded-xl bg-slate-800/30 border border-slate-600/50 hover:border-cyan-400/50 transition-all backdrop-blur-sm"
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h3 className="text-2xl font-bold text-cyan-400 mb-6 font-mono">
+              <span className="text-orange-400">$ </span>
+              send_message.sh
+            </h3>
+            
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-slate-300 font-mono text-sm mb-2">
+                    <span className="text-emerald-400">&gt; </span>
+                    --name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formState.name}
+                    onChange={e => setFormState(prev => ({ ...prev, name: e.target.value }))}
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border-2 border-slate-600/50 text-slate-300 font-mono focus:border-cyan-400 focus:outline-none transition-colors placeholder-slate-500"
+                    placeholder="Enter your name..."
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-slate-300 font-mono text-sm mb-2">
+                    <span className="text-emerald-400">&gt; </span>
+                    --email
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formState.email}
+                    onChange={e => setFormState(prev => ({ ...prev, email: e.target.value }))}
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border-2 border-slate-600/50 text-slate-300 font-mono focus:border-cyan-400 focus:outline-none transition-colors placeholder-slate-500"
+                    placeholder="your.email@domain.com"
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-slate-300 font-mono text-sm mb-2">
+                    <span className="text-emerald-400">&gt; </span>
+                    --subject
+                  </label>
+                  <input
+                    type="text"
+                    name="subject"
+                    value={formState.subject}
+                    onChange={e => setFormState(prev => ({ ...prev, subject: e.target.value }))}
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border-2 border-slate-600/50 text-slate-300 font-mono focus:border-cyan-400 focus:outline-none transition-colors placeholder-slate-500"
+                    placeholder="What's this about?"
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-slate-300 font-mono text-sm mb-2">
+                    <span className="text-emerald-400">&gt; </span>
+                    --message
+                  </label>
+                  <textarea
+                    name="message"
+                    value={formState.message}
+                    onChange={e => setFormState(prev => ({ ...prev, message: e.target.value }))}
+                    rows={5}
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800/50 border-2 border-slate-600/50 text-slate-300 font-mono focus:border-cyan-400 focus:outline-none transition-colors placeholder-slate-500 resize-vertical"
+                    placeholder="Tell me about your project or idea..."
+                    required
+                  />
+                </div>
+              </div>
+              
               <motion.button
                 type="submit"
-                className="w-full py-3 px-4 rounded-lg font-medium relative overflow-hidden group"
                 disabled={formState.submitting}
+                className="w-full py-4 px-6 rounded-lg font-mono font-semibold transition-all duration-300 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-white border-2 border-transparent hover:shadow-cyan-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600"
-                  animate={{
-                    backgroundPosition: ['0% 0%', '100% 100%'],
-                  }}
-                  transition={{ 
-                    duration: 3,
-                    repeat: Infinity, 
-                    repeatType: "mirror"
-                  }}
-                  style={{ backgroundSize: '200% 200%' }}
-                />
-                
                 {formState.submitting ? (
-                  <svg className="w-5 h-5 mx-auto animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
+                  <span className="flex items-center justify-center gap-2">
+                    <motion.div
+                      className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    />
+                    Sending...
+                  </span>
                 ) : (
-                  <span className="relative z-10 text-white">
-                    Send Message
+                  <span>
+                    <span className="text-white">$ </span>
+                    ./send --message
                   </span>
                 )}
               </motion.button>
+            </form>
+            
+            {/* Enhanced status messages */}
+            <AnimatePresence>
+              {formState.error && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="flex items-center gap-2 mt-4 p-3 bg-hacker-500/20 text-hacker-500 rounded-lg border border-hacker-500/50 font-mono"
+                >
+                  <span className="status-indicator status-error"></span>
+                  <span>ERROR: {formState.error}</span>
+                </motion.div>
+              )}
 
-              <AnimatePresence>
-                {formState.error && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="flex items-center gap-2 mt-4 p-3 bg-red-900/30 text-red-300 rounded-lg border border-red-900/50"
+              {formState.submitted && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="flex items-center gap-2 mt-4 p-3 bg-terminal-500/20 text-terminal-500 rounded-lg border border-terminal-500/50 font-mono"
+                >
+                  <span className="status-indicator status-online"></span>
+                  <span>SUCCESS: Message transmitted successfully!</span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Footer-style contact info */}
+          <motion.div
+            className="space-y-8"
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            {/* Footer-style contact methods */}
+            <div className="p-8 rounded-xl bg-slate-800/30 border border-slate-600/50 hover:border-emerald-400/50 transition-all backdrop-blur-sm">
+              <h3 className="text-2xl font-bold text-emerald-400 mb-6 font-mono">
+                <span className="text-orange-400">$ </span>
+                cat ./contact_info.json
+              </h3>
+              
+              <div className="space-y-6">
+                {contactInfo.map((info, index) => (
+                  <motion.a
+                    key={index}
+                    href={info.link}
+                    target={info.link.startsWith('http') ? "_blank" : undefined}
+                    rel={info.link.startsWith('http') ? "noopener noreferrer" : undefined}
+                    className="flex items-center gap-4 group p-4 rounded-lg border-2 border-slate-600/30 hover:border-cyan-400/50 transition-all bg-slate-800/30 hover:bg-slate-800/50"
+                    whileHover={{ scale: 1.02, x: 5 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
                   >
-                    <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span>{formState.error}</span>
-                  </motion.div>
-                )}
-
-                {formState.submitted && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="flex items-center gap-2 mt-4 p-3 bg-green-900/30 text-green-300 rounded-lg border border-green-900/50"
-                  >
-                    <svg className="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Message sent successfully!</span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.form>
-
-            <div className="space-y-6">
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5 }}
-                className="glass-morphism-enhanced p-8 rounded-xl relative overflow-hidden"
-              >
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
-                
-                <h3 className="text-xl font-semibold text-blue-400 mb-6">Contact Information</h3>
-                <div className="space-y-5">
-                  {contactInfo.map((info, index) => (
-                    <motion.a
-                      key={index}
-                      href={info.link}
-                      target={info.link.startsWith('http') ? "_blank" : undefined}
-                      rel={info.link.startsWith('http') ? "noopener noreferrer" : undefined}
-                      className="flex items-center space-x-4 text-gray-300 hover:text-blue-400 transition-colors group"
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ x: 5 }}
+                    <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-gradient-to-br from-cyan-500/20 to-emerald-500/20 border border-cyan-400/30 group-hover:border-cyan-400/60 transition-colors">
+                      {info.icon}
+                    </div>
+                    <div className="flex-1">
+                      <div className="font-mono text-cyan-400 text-sm">{info.command}</div>
+                      <div className="text-slate-300 group-hover:text-cyan-300 transition-colors">
+                        {info.value}
+                      </div>
+                    </div>
+                    <motion.svg 
+                      className="w-5 h-5 text-slate-500 group-hover:text-cyan-400 transition-colors" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                      animate={{ x: [0, 5, 0] }}
+                      transition={{ 
+                        repeat: Infinity, 
+                        duration: 2,
+                        repeatDelay: 2
+                      }}
                     >
-                      <div className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-500/20 text-blue-400 group-hover:bg-blue-500/30 transition-colors">
-                        {info.title === "Email" && (
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                          </svg>
-                        )}
-                        {info.title === "Phone" && (
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                          </svg>
-                        )}
-                        {info.title === "Location" && (
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                          </svg>
-                        )}
-                        {info.title === "LinkedIn" && (
-                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                          </svg>
-                        )}
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-400">{info.title}</p>
-                        <p className="group-hover:text-blue-400 transition-colors">{info.value}</p>
-                      </div>
-                    </motion.a>
-                  ))}
-                </div>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-                className="glass-morphism-enhanced p-8 rounded-xl relative overflow-hidden"
-              >
-                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500"></div>
-                
-                <h3 className="text-xl font-semibold text-purple-400 mb-6">Connect With Me</h3>
-                <div className="flex gap-5">
-                  <motion.a
-                    href="https://github.com/MedGm"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex flex-col items-center gap-2 group"
-                    whileHover={{ scale: 1.1 }}
-                  >
-                    <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-slate-800 text-gray-300 group-hover:text-blue-400 group-hover:bg-slate-700 transition-all">
-                      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                      </svg>
-                    </div>
-                    <span className="text-sm text-gray-400 group-hover:text-blue-400 transition-colors">GitHub</span>
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </motion.svg>
                   </motion.a>
-                  
-                  <motion.a
-                    href="https://linkedin.com/in/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex flex-col items-center gap-2 group"
-                    whileHover={{ scale: 1.1 }}
-                  >
-                    <div className="w-12 h-12 flex items-center justify-center rounded-lg bg-slate-800 text-gray-300 group-hover:text-blue-400 group-hover:bg-slate-700 transition-all">
-                      <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                      </svg>
-                    </div>
-                    <span className="text-sm text-gray-400 group-hover:text-blue-400 transition-colors">LinkedIn</span>
-                  </motion.a>
-                </div>
-              </motion.div>
+                ))}
+              </div>
             </div>
-          </div>
-        </motion.div>
+
+            {/* Footer-style availability */}
+            <div className="p-8 rounded-xl bg-slate-800/30 border border-slate-600/50 hover:border-purple-400/50 transition-all backdrop-blur-sm">
+              <h3 className="text-2xl font-bold text-purple-400 mb-6 font-mono">
+                <span className="text-orange-400">$ </span>
+                ./status --availability
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 text-slate-300 font-mono">
+                  <motion.div
+                    className="w-3 h-3 bg-emerald-400 rounded-full"
+                    animate={{ scale: [1, 1.2, 1], opacity: [0.7, 1, 0.7] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                  <span className="text-emerald-400">Status:</span>
+                  <span>Available for freelance projects</span>
+                </div>
+                
+                <div className="text-slate-400 font-mono text-sm space-y-2">
+                  <p><span className="text-cyan-400"># </span>Response time: Usually within 24 hours</p>
+                  <p><span className="text-cyan-400"># </span>Best contact: Email or LinkedIn</p>
+                  <p><span className="text-cyan-400"># </span>Time zone: GMT+1 (Morocco)</p>
+                </div>
+                
+                <div className="pt-4 border-t border-slate-600/30">
+                  <p className="text-slate-400 font-mono text-sm">
+                    <span className="text-orange-400">$ </span>
+                    echo "Looking forward to collaborating with you!"
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
