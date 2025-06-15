@@ -1,444 +1,381 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Ubuntu+Mono:wght@400;700&display=swap');
 
-/* Mr. Robot / Ubuntu Linux AI Theme Variables */
-:root {
-  --terminal-green: #00ff41;
-  --matrix-green: #0dbc79;
-  --ubuntu-orange: #e95420;
-  --terminal-amber: #ffb86c;
-  --hacker-red: #ff5555;
-  --cyber-blue: #6272a4;
-  --terminal-bg: #0c0c0c;
-  --ubuntu-dark: #2c001e;
-  --console-gray: #44475a;
-  --text-green: #50fa7b;
-  --warning-yellow: #f1fa8c;
-  --neon-cyan: #8be9fd;
-}
-
-/* Global theme overrides */
+/* Global background and text */
 @layer base {
   html, body {
-    user-select: none;
+    background: linear-gradient(120deg, #0a192f 0%, #1e293b 100%);
+    color: #f1f5f9;
+    font-family: 'Inter', system-ui, sans-serif;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    user-select: none;
     overflow-x: hidden;
     scroll-behavior: smooth;
-    background-color: var(--terminal-bg);
-    font-family: 'JetBrains Mono', 'Ubuntu Mono', monospace;
+    min-height: 100vh;
   }
-  
-  /* Terminal cursor animation */
-  .terminal-cursor::after {
-    content: '█';
-    color: var(--terminal-green);
-    animation: blink 1s infinite;
-  }
-  
-  @keyframes blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
-  }
-  
-  /* Allow selection in specific elements */
   input, textarea, [contenteditable="true"] {
-    user-select: text;
     -webkit-user-select: text;
     -moz-user-select: text;
     -ms-user-select: text;
+    user-select: text;
   }
-
-  /* Terminal-like focus styles */
+  a {
+    transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+    outline: none !important;
+  }
   :focus-visible {
-    outline: 2px solid var(--terminal-green);
+    outline: 2px solid #6366f1;
     outline-offset: 2px;
-    box-shadow: 0 0 10px var(--terminal-green);
   }
 }
 
-/* Mr. Robot inspired text gradient */
-.text-gradient-hacker {
-  background: linear-gradient(135deg, var(--terminal-green), var(--matrix-green), var(--ubuntu-orange));
+/* Consistent background across all sections */
+#home, #about, #projects, #skills, #achievements, #contact {
+  position: relative;
+  isolation: isolate;
+  background: transparent !important;
+}
+
+/* Enhanced glass morphism effect */
+.glass-morphism-enhanced {
+  background: rgba(17, 24, 39, 0.7);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(59, 130, 246, 0.10);
+  box-shadow: 0 8px 32px 0 rgba(59,130,246,0.10), 0 1.5px 4px 0 rgba(0,0,0,0.10);
+  transition: all 0.35s cubic-bezier(.4,0,.2,1);
+}
+.glass-morphism-enhanced:hover {
+  border-color: rgba(139, 92, 246, 0.18);
+  box-shadow: 0 12px 48px 0 rgba(139,92,246,0.13), 0 2px 8px 0 rgba(0,0,0,0.13);
+}
+
+/* Animated gradient text */
+.text-gradient-animated {
+  background: linear-gradient(90deg, #60a5fa, #a855f7, #ec4899, #60a5fa);
+  background-size: 300% 300%;
   background-clip: text;
-  -webkit-background-clip: text;
   color: transparent;
-  background-size: 300% auto;
-  animation: matrix-flow 4s ease-in-out infinite;
+  animation: gradient-shift 8s ease-in-out infinite;
 }
-
-/* Ubuntu/Terminal glass morphism effect */
-.glass-morphism-terminal {
-  background: rgba(12, 12, 12, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--terminal-green);
-  box-shadow: 
-    0 0 20px rgba(0, 255, 65, 0.2),
-    inset 0 1px 0 rgba(0, 255, 65, 0.1);
-  transition: all 0.3s ease;
-  position: relative;
-}
-
-.glass-morphism-terminal::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--terminal-green), transparent);
-  animation: scan-line 3s linear infinite;
-}
-
-.glass-morphism-terminal:hover {
-  border-color: var(--ubuntu-orange);
-  box-shadow: 
-    0 0 30px rgba(233, 84, 32, 0.3),
-    inset 0 1px 0 rgba(233, 84, 32, 0.2);
-}
-
-/* Terminal window styling */
-.terminal-window {
-  background: var(--terminal-bg);
-  border: 2px solid var(--terminal-green);
-  border-radius: 8px;
-  box-shadow: 
-    0 0 20px rgba(0, 255, 65, 0.3),
-    inset 0 0 50px rgba(0, 255, 65, 0.05);
-  position: relative;
-}
-
-.terminal-window::before {
-  content: '● ● ●';
-  position: absolute;
-  top: 8px;
-  left: 12px;
-  color: var(--hacker-red);
-  font-size: 12px;
-  letter-spacing: 4px;
-}
-
-.terminal-window::after {
-  content: 'user@portfolio:~$ ';
-  position: absolute;
-  top: 8px;
-  right: 12px;
-  color: var(--terminal-green);
-  font-size: 12px;
-  font-family: 'Ubuntu Mono', monospace;
-}
-
-/* Matrix/Mr. Robot animations */
-@keyframes matrix-flow {
+@keyframes gradient-shift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }
 
-@keyframes scan-line {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-@keyframes terminal-glow {
-  0%, 100% { 
-    box-shadow: 0 0 5px var(--terminal-green);
-    text-shadow: 0 0 10px var(--terminal-green);
-  }
-  50% { 
-    box-shadow: 0 0 20px var(--terminal-green), 0 0 30px var(--terminal-green);
-    text-shadow: 0 0 20px var(--terminal-green);
-  }
-}
-
-/* Ubuntu-style buttons */
-.btn-ubuntu {
-  background: linear-gradient(135deg, var(--ubuntu-orange), var(--hacker-red));
-  border: 1px solid var(--ubuntu-orange);
-  color: white;
-  font-family: 'Ubuntu Mono', monospace;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: all 0.3s ease;
+/* Section transitions */
+.page-section {
+  transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
+  opacity: 1;
+  transform: translateY(0);
   position: relative;
-  overflow: hidden;
+  z-index: 10;
+}
+.page-section-exit {
+  opacity: 0;
+  transform: translateY(40px);
 }
 
-.btn-ubuntu::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
+/* Remove conflicting backgrounds in each section */
+#about, #skills, #projects, #achievements {
+  background: transparent !important;
 }
 
-.btn-ubuntu:hover::before {
-  left: 100%;
+/* Create a unified gradient background for the entire app */
+body {
+  background: linear-gradient(to bottom, #0a192f, #112240, #0a192f) !important;
+  background-attachment: fixed !important;
 }
 
-.btn-ubuntu:hover {
-  box-shadow: 0 0 20px var(--ubuntu-orange);
-  transform: translateY(-2px);
-}
-
-/* Terminal-style code blocks */
-.code-terminal {
-  background: var(--terminal-bg);
-  border: 1px solid var(--terminal-green);
-  border-radius: 4px;
-  padding: 16px;
-  font-family: 'JetBrains Mono', monospace;
-  color: var(--text-green);
-  position: relative;
-  overflow: hidden;
-}
-
-.code-terminal::before {
-  content: '> ';
-  color: var(--ubuntu-orange);
-  font-weight: bold;
-}
-
-/* AI/ML themed particle effects */
-.ai-particle {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  background: var(--terminal-green);
-  box-shadow: 0 0 6px var(--terminal-green);
-  animation: ai-flow 8s linear infinite;
-}
-
-@keyframes ai-flow {
-  0% { 
-    transform: translateY(100vh) translateX(0);
-    opacity: 0;
-  }
-  10% { opacity: 1; }
-  90% { opacity: 1; }
-  100% { 
-    transform: translateY(-10px) translateX(50px);
-    opacity: 0;
-  }
-}
-
-/* Hacker-style text effects */
-.text-glitch {
-  position: relative;
-  color: var(--text-green);
-  font-family: 'JetBrains Mono', monospace;
-}
-
-.text-glitch::before,
-.text-glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.text-glitch::before {
-  animation: glitch-1 0.5s infinite;
-  color: var(--hacker-red);
-  z-index: -1;
-}
-
-.text-glitch::after {
-  animation: glitch-2 0.5s infinite;
-  color: var(--neon-cyan);
-  z-index: -2;
-}
-
-@keyframes glitch-1 {
-  0%, 14%, 15%, 49%, 50%, 99%, 100% {
-    transform: translate(0);
-  }
-  15%, 49% {
-    transform: translate(-2px, -1px);
-  }
-  50%, 99% {
-    transform: translate(1px, -2px);
-  }
-}
-
-@keyframes glitch-2 {
-  0%, 20%, 21%, 62%, 63%, 99%, 100% {
-    transform: translate(0);
-  }
-  21%, 62% {
-    transform: translate(2px, 1px);
-  }
-  63%, 99% {
-    transform: translate(-1px, 2px);
-  }
-}
-
-/* Ubuntu loading animation */
-.ubuntu-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid var(--console-gray);
-  border-top: 3px solid var(--ubuntu-orange);
-  border-radius: 50%;
-  animation: ubuntu-spin 1s linear infinite;
-}
-
-@keyframes ubuntu-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Terminal scrollbar */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  background: var(--terminal-bg);
-  border: 1px solid var(--console-gray);
+  background: #1e293b;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(to bottom, var(--terminal-green), var(--matrix-green));
-  border-radius: 4px;
-  border: 1px solid var(--terminal-green);
+  background: linear-gradient(to bottom, #3b82f6, #9333ea);
+  border-radius: 9999px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(to bottom, var(--ubuntu-orange), var(--hacker-red));
-  box-shadow: 0 0 10px var(--ubuntu-orange);
+  background: linear-gradient(to bottom, #60a5fa, #a855f7);
 }
 
-/* Performance optimizations maintained */
+/* Disable text selection globally */
+@layer base {
+  html, body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+  
+  /* Allow selection in specific elements that need it */
+  input, textarea, [contenteditable="true"] {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+
+  /* Global link styling */
+  a {
+    transition: all 0.3s;
+    outline: none !important;
+  }
+
+  /* Focus styles */
+  :focus-visible {
+    outline: 2px solid rgba(59, 130, 246, 0.5);
+    outline-offset: 2px;
+  }
+}
+
+/* Enhanced text gradient animation for consistent usage across components */
+.text-gradient-animated {
+  background: linear-gradient(to right, #60a5fa, #a855f7, #ec4899);
+  background-clip: text;
+  color: transparent;
+  background-size: 200% auto;
+  animation: gradient-shift 8s ease infinite;
+}
+
+/* Enhanced glass morphism effect */
+.glass-morphism-enhanced {
+  background: rgba(15, 23, 42, 0.6);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(30, 41, 59, 0.8);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.glass-morphism-enhanced:hover {
+  border-color: rgba(51, 65, 85, 0.8);
+  box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.2), 0 10px 20px -6px rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced animations */
+@keyframes gradient-shift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Animation delays for staggered effects */
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Enhanced blob animation */
+@keyframes blob {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+  25% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+  50% {
+    border-radius: 40% 60% 30% 70% / 70% 30% 50% 40%;
+  }
+  75% {
+    border-radius: 60% 40% 70% 30% / 40% 50% 60% 70%;
+  }
+}
+
+.animate-blob {
+  animation: blob 7s ease-in-out infinite;
+}
+
+/* Performance optimizations */
 .will-change-transform {
   will-change: transform;
 }
 
+.will-change-opacity {
+  will-change: opacity;
+}
+
+.performance-gpu {
+  transform: translateZ(0);
+}
+
+/* Optimize animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-float-slow {
+  animation: float 12s ease-in-out infinite;
+  will-change: transform;
+}
+
+.animate-float-slower {
+  animation: float 15s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Use CSS animations instead of JS where possible */
+.hover-scale {
+  transition: transform 0.3s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Optimize will-change for specific elements */
+.scroll-animation {
+  will-change: transform, opacity;
+}
+
+/* Force hardware acceleration for certain elements */
 .hardware-accelerated {
   transform: translateZ(0);
   backface-visibility: hidden;
   perspective: 1000px;
 }
 
-/* Mr. Robot inspired status indicators */
-.status-indicator {
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  margin-right: 8px;
-  animation: pulse-status 2s infinite;
-}
-
-.status-online {
-  background: var(--terminal-green);
-  box-shadow: 0 0 10px var(--terminal-green);
-}
-
-.status-warning {
-  background: var(--warning-yellow);
-  box-shadow: 0 0 10px var(--warning-yellow);
-}
-
-.status-error {
-  background: var(--hacker-red);
-  box-shadow: 0 0 10px var(--hacker-red);
-}
-
-@keyframes pulse-status {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-/* AI-themed floating elements */
-.ai-node {
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background: var(--neon-cyan);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--neon-cyan);
-  animation: ai-node-float 6s ease-in-out infinite;
-}
-
-@keyframes ai-node-float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  33% { transform: translateY(-20px) rotate(120deg); }
-  66% { transform: translateY(10px) rotate(240deg); }
-}
-
-/* Terminal prompt animation */
-.terminal-prompt::after {
-  content: '|';
-  color: var(--terminal-green);
-  animation: cursor-blink 1s infinite;
-}
-
-@keyframes cursor-blink {
-  0%, 50% { opacity: 1; }
-  51%, 100% { opacity: 0; }
-}
-
 /* Enhanced glass morphism with depth */
 .glass-morphism-enhanced-depth {
-  background: rgba(12, 12, 12, 0.8);
+  background: rgba(15, 23, 42, 0.6);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  border: 1px solid var(--terminal-green);
+  border: 1px solid rgba(30, 41, 59, 0.8);
   box-shadow: 
-    0 0 20px rgba(0, 255, 65, 0.2),
-    inset 0 1px 0 rgba(0, 255, 65, 0.1);
+    0 10px 25px -5px rgba(0, 0, 0, 0.15), 
+    0 8px 10px -6px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(59, 130, 246, 0.05) inset;
   transition: all 0.3s ease;
 }
 
 .glass-morphism-enhanced-depth:hover {
-  border-color: var(--ubuntu-orange);
+  border-color: rgba(51, 65, 85, 0.8);
   box-shadow: 
-    0 0 30px rgba(233, 84, 32, 0.3),
-    inset 0 1px 0 rgba(233, 84, 32, 0.2);
+    0 15px 30px -8px rgba(0, 0, 0, 0.25), 
+    0 10px 20px -6px rgba(0, 0, 0, 0.25),
+    0 0 0 1px rgba(59, 130, 246, 0.1) inset;
 }
 
-/* Enhanced text gradient animation for consistent usage across components */
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #3b82f6, #9333ea);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #60a5fa, #a855f7);
+}
+
+/* Add fixed z-index stacking context to prevent component overlapping */
+#home {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Prevent profile image flashing in Home component */
+#home img.rounded-full {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+  isolation: isolate;
+  transform: translateZ(0); /* Force hardware acceleration */
+}
+
+/* Create more stable background in home section */
+#home .absolute.inset-0.-z-10 {
+  overflow: hidden;
+  isolation: isolate;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Stabilize gradient animations */
 .text-gradient-animated {
-  background: linear-gradient(135deg, var(--terminal-green), var(--matrix-green), var(--ubuntu-orange));
+  will-change: background-position;
+  background-size: 200% auto;
   background-clip: text;
   -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   color: transparent;
-  background-size: 300% auto;
-  animation: matrix-flow 4s ease-in-out infinite;
+  transform: translateZ(0);
 }
 
-/* Enhanced glass morphism effect */
-.glass-morphism-enhanced {
-  background: rgba(12, 12, 12, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--terminal-green);
-  box-shadow: 
-    0 0 20px rgba(0, 255, 65, 0.2),
-    inset 0 1px 0 rgba(0, 255, 65, 0.1);
-  transition: all 0.3s ease;
+/* Fixed layering for scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
 }
 
-.glass-morphism-enhanced:hover {
-  border-color: var(--ubuntu-orange);
-  box-shadow: 
-    0 0 30px rgba(233, 84, 32, 0.3),
-    inset 0 1px 0 rgba(233, 84, 32, 0.2);
+/* Extra stability for backgrounds and animations to prevent flashing */
+.absolute.inset-0.-z-10,
+.absolute.inset-0.opacity-20,
+.rounded-full.absolute {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: auto;
+  isolation: isolate;
 }
 
-.glass-morphism {
-  background: rgba(12, 12, 12, 0.7);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--console-gray);
-  box-shadow: 
-    0 0 15px rgba(0, 255, 65, 0.1),
-    inset 0 1px 0 rgba(0, 255, 65, 0.05);
-  transition: all 0.3s ease;
+/* Disable hover animations for elements causing flashing */
+@media (hover: hover) {
+  #home * {
+    transform-style: flat;
+  }
+}
+
+/* Enhanced section styling to ensure consistent backgrounds */
+.section-container {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  transform: translateZ(0);
+}
+
+/* Prevent background transitions between sections */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(to bottom, #0a192f, #112240, #0a192f);
+  z-index: -100;
+}
+
+/* Ensure all background elements use hardware acceleration */
+.absolute.inset-0.-z-10, 
+.absolute.rounded-full, 
+.blur-3xl {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: opacity;
 }

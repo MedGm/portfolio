@@ -7,168 +7,103 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Mr. Robot / Ubuntu / AI theme colors
-        terminal: {
-          50: '#e6ffec',
-          100: '#b3ffc7',
-          200: '#80ff9f',
-          300: '#4dff77',
-          400: '#1aff4f',
-          500: '#00ff41', // Primary terminal green
-          600: '#00e63a',
-          700: '#00cc33',
-          800: '#00b32c',
-          900: '#009925',
+        primary: {
+          50: '#eef2ff',
+          100: '#e0e7ff',
+          200: '#c7d2fe',
+          300: '#a5b4fc',
+          400: '#818cf8',
+          500: '#6366f1', // Base primary color
+          600: '#4f46e5',
+          700: '#4338ca',
+          800: '#3730a3',
+          900: '#312e81',
+          950: '#1e1b4b',
         },
-        matrix: {
-          50: '#e6f7f2',
-          100: '#b3ead9',
-          200: '#80ddc0',
-          300: '#4dd0a7',
-          400: '#1ac38e',
-          500: '#0dbc79', // Matrix green
-          600: '#0ca66b',
-          700: '#0a905d',
-          800: '#087a4f',
-          900: '#066441',
+        secondary: {
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b', // Base secondary color
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617',
         },
-        ubuntu: {
-          50: '#fef2f0',
-          100: '#fdddd7',
-          200: '#fbb8a8',
-          300: '#f99379',
-          400: '#f76e4a',
-          500: '#e95420', // Ubuntu orange
-          600: '#d1491c',
-          700: '#b93e18',
-          800: '#a13314',
-          900: '#892810',
-        },
-        hacker: {
-          50: '#fff5f5',
-          100: '#ffe0e0',
-          200: '#ffb3b3',
-          300: '#ff8585',
-          400: '#ff7070',
-          500: '#ff5555', // Hacker red
-          600: '#e64d4d',
-          700: '#cc4444',
-          800: '#b33b3b',
-          900: '#993333',
-        },
-        cyber: {
-          50: '#f2f4f8',
-          100: '#e0e5ec',
-          200: '#bcc5d4',
-          300: '#98a5bc',
-          400: '#7485a4',
-          500: '#6272a4', // Cyber blue
-          600: '#586694',
-          700: '#4e5a83',
-          800: '#444e73',
-          900: '#3a4263',
-        },
-        console: {
-          50: '#f5f5f6',
-          100: '#e8e9eb',
-          200: '#cfd1d6',
-          300: '#b6b9c1',
-          400: '#9da1ac',
-          500: '#44475a', // Console gray
-          600: '#3d4051',
-          700: '#363848',
-          800: '#2f303f',
-          900: '#282936',
-        },
-        ai: {
-          50: '#f0fffe',
-          100: '#ccfffe',
-          200: '#99fffd',
-          300: '#66fffc',
-          400: '#33fffb',
-          500: '#8be9fd', // AI cyan
-          600: '#7dd2e4',
-          700: '#6fbccb',
-          800: '#61a5b2',
-          900: '#538f99',
+        accent: {
+          50: '#f0f9ff',
+          100: '#e0f2fe',
+          200: '#bae6fd',
+          300: '#7dd3fc',
+          400: '#38bdf8',
+          500: '#0ea5e9', // Base accent color
+          600: '#0284c7',
+          700: '#0369a1',
+          800: '#075985',
+          900: '#0c4a6e',
+          950: '#082f49',
         },
         dark: {
-          DEFAULT: '#0c0c0c', // Terminal black
-          light: '#2c001e',   // Ubuntu dark
-          lighter: '#44475a', // Console gray
-          deep: '#000000',    // Pure black
+          DEFAULT: '#0a192f',
+          light: '#112240',
+          lighter: '#1e3a8a',
+          dark: '#060f1d',
+          darker: '#030812',
+        },
+        glow: {
+          blue: '#00f3ff',
+          purple: '#9d4edd',
+          pink: '#f472b6',
         }
       },
       fontFamily: {
-        mono: ['JetBrains Mono', 'Ubuntu Mono', 'Fira Code', 'monospace'],
-        terminal: ['Ubuntu Mono', 'monospace'],
-        code: ['JetBrains Mono', 'monospace'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['Fira Code', 'monospace'],
       },
       boxShadow: {
-        'terminal': '0 0 20px rgba(0, 255, 65, 0.3)',
-        'ubuntu': '0 0 20px rgba(233, 84, 32, 0.3)',
-        'hacker': '0 0 20px rgba(255, 85, 85, 0.3)',
-        'ai-glow': '0 0 30px rgba(139, 233, 253, 0.4)',
-        'matrix': '0 0 25px rgba(13, 188, 121, 0.4)',
+        'neon-light': '0 0 5px theme(colors.glow.blue), 0 0 10px theme(colors.glow.blue)',
+        'neon-medium': '0 0 15px theme(colors.glow.blue), 0 0 30px rgba(0, 243, 255, 0.5)',
+        'neon-strong': '0 0 20px theme(colors.glow.blue), 0 0 40px theme(colors.glow.blue), 0 0 60px rgba(0, 243, 255, 0.3)',
+        'neon-purple': '0 0 15px theme(colors.glow.purple), 0 0 30px rgba(157, 78, 221, 0.5)',
       },
       animation: {
-        'matrix-flow': 'matrix-flow 4s ease-in-out infinite',
-        'scan-line': 'scan-line 3s linear infinite',
-        'terminal-glow': 'terminal-glow 2s ease-in-out infinite',
-        'glitch': 'glitch-1 0.5s infinite',
-        'cursor-blink': 'cursor-blink 1s infinite',
-        'ai-float': 'ai-node-float 6s ease-in-out infinite',
-        'ubuntu-spin': 'ubuntu-spin 1s linear infinite',
+        'gradient-x': 'gradient-x 10s ease infinite',
+        'gradient-y': 'gradient-y 10s ease infinite',
+        'gradient-xy': 'gradient-xy 10s ease infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-glow': 'pulse-glow 4s ease-in-out infinite alternate',
+        'text-shimmer': 'text-shimmer 2.5s ease-out infinite alternate',
       },
       keyframes: {
-        'matrix-flow': {
-          '0%, 100%': { backgroundPosition: '0% 50%' },
-          '50%': { backgroundPosition: '100% 50%' }
-        },
-        'scan-line': {
-          '0%': { transform: 'translateX(-100%)' },
-          '100%': { transform: 'translateX(100%)' }
-        },
-        'terminal-glow': {
-          '0%, 100%': { 
-            boxShadow: '0 0 5px var(--terminal-green)',
-            textShadow: '0 0 10px var(--terminal-green)'
+        'gradient-xy': {
+          '0%, 100%': {
+            'background-size': '400% 400%',
+            'background-position': 'left top'
           },
-          '50%': { 
-            boxShadow: '0 0 20px var(--terminal-green), 0 0 30px var(--terminal-green)',
-            textShadow: '0 0 20px var(--terminal-green)'
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'right bottom'
           }
         },
-        'glitch-1': {
-          '0%, 14%, 15%, 49%, 50%, 99%, 100%': { transform: 'translate(0)' },
-          '15%, 49%': { transform: 'translate(-2px, -1px)' },
-          '50%, 99%': { transform: 'translate(1px, -2px)' }
+        'float': {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' }
         },
-        'cursor-blink': {
-          '0%, 50%': { opacity: '1' },
-          '51%, 100%': { opacity: '0' }
+        'pulse-glow': {
+          '0%': { boxShadow: '0 0 10px rgba(0, 243, 255, 0.5)' },
+          '50%': { boxShadow: '0 0 20px rgba(157, 78, 221, 0.7), 0 0 30px rgba(157, 78, 221, 0.4)' },
+          '100%': { boxShadow: '0 0 10px rgba(0, 243, 255, 0.5)' }
         },
-        'ai-node-float': {
-          '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
-          '33%': { transform: 'translateY(-20px) rotate(120deg)' },
-          '66%': { transform: 'translateY(10px) rotate(240deg)' }
-        },
-        'ubuntu-spin': {
-          '0%': { transform: 'rotate(0deg)' },
-          '100%': { transform: 'rotate(360deg)' }
+        'text-shimmer': {
+          '0%': { backgroundPosition: '0% 50%' },
+          '100%': { backgroundPosition: '100% 50%' }
         }
       },
       backdropBlur: {
         xs: '2px',
-      },
-      typography: {
-        terminal: {
-          css: {
-            fontFamily: 'JetBrains Mono, Ubuntu Mono, monospace',
-            color: '#50fa7b',
-            backgroundColor: '#0c0c0c',
-          }
-        }
       }
     },
   },

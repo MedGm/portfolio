@@ -1,410 +1,389 @@
 import { motion } from 'framer-motion';
 import { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import IconProvider from './utils/IconProvider';
+import { personalInfo, education, qualityTraits, activities } from '../data/portfolioData';
 
-// Terminal-themed quality card component
+// Create a memoized version of the component with proper PropTypes
 const QualityCard = ({ quality, index }) => (
   <motion.div
     key={index}
-    className="glass-morphism-terminal p-4 rounded-lg group/item hardware-accelerated"
+    className="p-4 rounded-lg bg-slate-800/60 border border-slate-700/40 group/item hardware-accelerated shadow-lg transition-all duration-300"
     whileHover={{ 
-      scale: 1.03,
-      boxShadow: "0 0 15px rgba(0, 255, 65, 0.2)"
+      scale: 1.04,
+      backgroundColor: "rgba(30, 41, 59, 0.7)",
+      borderColor: "rgba(59, 130, 246, 0.18)"
     }}
     initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true }}
     transition={{ delay: index * 0.1, duration: 0.5 }}
   >
-    {/* Terminal-style icon */}
-    <div className="text-terminal-500 mb-3 flex justify-center sm:justify-start">
-      {quality.icon}
+    {/* Icon with smooth animation */}
+    <div className="text-blue-400 mb-3 flex justify-center sm:justify-start">
+      <IconProvider icon={quality.icon} className="w-8 h-8" />
     </div>
-    <h4 className="text-lg font-semibold text-terminal-500 mb-1 group-hover/item:text-ubuntu-500 transition-colors font-mono">
+    <h4 className="text-lg font-semibold bg-gradient-to-r from-blue-400 to-blue-300 text-transparent bg-clip-text mb-1 group-hover/item:from-blue-300 group-hover/item:to-blue-200 transition-all">
       {quality.title}
     </h4>
-    <p className="text-sm text-matrix-500 group-hover/item:text-ai-500 transition-colors font-mono">
+    <p className="text-sm text-gray-400 group-hover:item:text-gray-300 transition-colors">
       {quality.description}
     </p>
   </motion.div>
 );
 
+// Add PropTypes for QualityCard
 QualityCard.propTypes = {
   quality: PropTypes.shape({
     title: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
-    icon: PropTypes.element.isRequired
+    icon: PropTypes.string.isRequired
+  }).isRequired,
+  index: PropTypes.number.isRequired
+};
+
+// Activity Card Component
+const ActivityCard = ({ activity, index }) => (
+  <motion.div
+    initial={{ opacity: 0, x: -20 }}
+    whileInView={{ opacity: 1, x: 0 }}
+    viewport={{ once: true }}
+    transition={{ delay: index * 0.2 }}
+    className="flex items-start gap-4 group bg-slate-800/60 border border-slate-700/40 rounded-lg p-3 shadow-lg transition-all duration-300"
+    whileHover={{
+      scale: 1.04,
+      backgroundColor: "rgba(30, 41, 59, 0.7)",
+      borderColor: "rgba(59, 130, 246, 0.18)"
+    }}
+  >
+    <div className="bg-blue-500/10 p-3 rounded-lg text-blue-400 flex-shrink-0 group-hover:bg-blue-500/20 transition-colors">
+      <IconProvider icon={activity.icon} className="w-6 h-6" />
+    </div>
+    <div>
+      <h4 className="text-lg font-medium bg-gradient-to-r from-blue-300 to-indigo-300 text-transparent bg-clip-text mb-1 group-hover:from-blue-200 group-hover:to-indigo-200">
+        {activity.title}
+      </h4>
+      <p className="text-gray-400 group-hover:text-gray-300 transition-colors text-sm">
+        {activity.description}
+      </p>
+    </div>
+  </motion.div>
+);
+
+ActivityCard.propTypes = {
+  activity: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string.isRequired,
+    icon: PropTypes.string.isRequired
   }).isRequired,
   index: PropTypes.number.isRequired
 };
 
 function About() {
-  // Terminal/hacker themed qualities
-  const qualities = useMemo(() => [
-    { 
-      title: "Logic Architect", 
-      description: "Debug && solve --recursive",
-      icon: (
-        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-          <polyline points="14 2 14 8 20 8" />
-          <path d="M12 18v-6" />
-          <path d="M8 15l4 3 4-3" />
-        </svg>
-      )
-    },
-    { 
-      title: "Neural Adapter", 
-      description: "while(learning) { adapt(); }",
-      icon: (
-        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M12 20.5a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Z" />
-          <path d="m12 8 4 4-4 4" />
-          <path d="m8 12h8" />
-        </svg>
-      )
-    },
-    { 
-      title: "Protocol Manager", 
-      description: "sudo manage --class --admin",
-      icon: (
-        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-        </svg>
-      )
-    },
-    { 
-      title: "Code Synthesizer", 
-      description: "innovation.compile(creativity)",
-      icon: (
-        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-        </svg>
-      )
-    }
-  ], []);
-
-  // Terminal-style achievements
-  const achievements = useMemo(() => [
-    "First Year Engineering in Software && AI Systems",
-    "Full-Stack.development([MERN, MEAN])",
-    "Unity.gameEngine.mastery()",
-    "TypeScript && Angular.build(projects)",
-    "algorithms.study(dataStructures, complexity)"
+  // Memoize data to prevent recreation on re-renders
+  const highlights = useMemo(() => [
+    "First Year Engineering Student in Software and Intelligent Systems",
+    "Experience with Full-Stack Development (MERN & MEAN Stack)",
+    "Game Development with Unity",
+    "TypeScript and Angular Application Development",
+    "Strong foundation in Data Structures and Algorithms"
   ], []);
 
   return (
-    <motion.div 
-      id="about" 
-      className="min-h-screen pt-20 pb-16 bg-gradient-to-b from-slate-700 via-slate-800 to-slate-900 select-none relative"
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 1, ease: "easeInOut" }}
-    >
-      {/* Enhanced entrance transition */}
-      <motion.div
-        className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-slate-700/50 to-transparent pointer-events-none"
-        initial={{ opacity: 0, y: -20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-      />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        {/* Enhanced background effects with smoother transitions */}
-        <div className="absolute inset-0 -z-10 overflow-hidden">
-          {/* Animated matrix grid */}
-          <motion.div 
-            className="absolute inset-0 opacity-5"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 0.05 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.5, delay: 0.3 }}
-          >
-            <div className="h-full w-full" 
-              style={{ 
-                backgroundImage: `linear-gradient(to right, rgba(6, 182, 212, 0.1) 1px, transparent 1px),
-                                 linear-gradient(to bottom, rgba(6, 182, 212, 0.1) 1px, transparent 1px)`, 
-                backgroundSize: '30px 30px'
-              }}
-            />
-          </motion.div>
-          
-          {/* Enhanced floating particles with staggered animation */}
-          {[...Array(6)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute w-1 h-1 rounded-full"
-              initial={{ 
-                opacity: 0,
-                scale: 0,
-                y: 50
-              }}
-              whileInView={{ 
-                opacity: [0.3, 0.8, 0.3],
-                scale: [1, 1.5, 1],
-                y: [0, -30, 0]
-              }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 8 + i,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: i * 0.8,
-              }}
-              style={{
-                top: `${20 + i * 12}%`,
-                left: `${15 + i * 14}%`,
-                background: i % 3 === 0 ? '#06b6d4' : i % 3 === 1 ? '#10b981' : '#8b5cf6',
-                boxShadow: `0 0 15px ${i % 3 === 0 ? '#06b6d4' : i % 3 === 1 ? '#10b981' : '#8b5cf6'}`,
-              }}
-            />
-          ))}
+    <section id="about" className="min-h-screen pt-20 pb-16 select-none relative section-container">
+      {/* Subtle gradient top border */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-blue-500/0 via-blue-500/50 to-purple-500/0"></div>
+      
+      {/* Enhanced Background Elements */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        {/* Base gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-900/95 to-slate-900/90" />
+        
+        {/* Static grid background */}
+        <div className="absolute inset-0 opacity-20">
+          <div className="h-full w-full" 
+            style={{ 
+              backgroundImage: `radial-gradient(rgba(59, 130, 246, 0.15) 1px, transparent 1px)`, 
+              backgroundSize: '40px 40px'
+            }}
+          />
         </div>
+        
+        {/* Decorative background blobs with consistent styling */}
+        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-blue-500/5 rounded-full filter blur-3xl transform-gpu"></div>
+        <div className="absolute -bottom-[10%] -right-[10%] w-[40%] h-[40%] bg-purple-500/5 rounded-full filter blur-3xl transform-gpu"></div>
+        <div className="absolute right-1/4 top-1/3 w-[25%] h-[25%] bg-indigo-500/5 rounded-full filter blur-3xl transform-gpu"></div>
+      </div>
 
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.4 }}
+          transition={{ duration: 0.7 }}
           className="space-y-16"
         >
-          {/* Enhanced header with staggered animation */}
+          {/* Section Header with consistent styling */}
           <div className="text-center space-y-4">
             <motion.h2 
-              className="text-4xl md:text-5xl font-bold relative inline-block font-mono"
-              initial={{ opacity: 0, y: 30, scale: 0.9 }}
-              whileInView={{ opacity: 1, y: 0, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.6, type: "spring", stiffness: 150 }}
-            >
-              <span className="text-orange-400">$ </span>
-              <span className="bg-gradient-to-r from-cyan-400 via-emerald-400 to-purple-400 bg-clip-text text-transparent">cat ./about.json</span>
-              <span className="text-cyan-400 animate-pulse">_</span>
-              
-              <motion.div 
-                className="absolute -bottom-2 left-0 right-0 h-1 rounded-full bg-gradient-to-r from-cyan-500 via-emerald-500 to-purple-500"
-                initial={{ scaleX: 0, originX: 0 }}
-                whileInView={{ scaleX: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 1, duration: 1.2, ease: "easeOut" }}
-              />
-            </motion.h2>
-            <motion.p 
-              className="text-xl text-slate-400 max-w-3xl mx-auto font-mono"
+              className="text-4xl md:text-5xl font-bold relative inline-block"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.8 }}
+              transition={{ duration: 0.5 }}
             >
-              <span className="text-cyan-400"># </span>
-              Passionate about building the future through code
-            </motion.p>
+              <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-400 text-transparent bg-clip-text">
+                About Me
+              </span>
+              {/* Animated underline matching other sections */}
+              <motion.div 
+                className="absolute -bottom-2 left-0 right-0 h-1 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"
+                initial={{ scaleX: 0, originX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+              />
+            </motion.h2>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              Passionate about creating innovative solutions and exploring new technologies
+            </p>
           </div>
 
-          <motion.div 
-            className="grid grid-cols-1 lg:grid-cols-2 gap-12"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            {/* Left Column with enhanced entrance */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            {/* Left Column - Introduction and Activities */}
             <motion.div
               className="space-y-8"
-              initial={{ opacity: 0, x: -80 }}
+              initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.8, type: "spring", stiffness: 100 }}
+              transition={{ duration: 0.5 }}
             >
-              {/* Footer-style terminal cards */}
+              {/* Background Section */}
               <motion.div 
-                className="p-6 md:p-8 rounded-xl relative overflow-hidden bg-slate-800/30 border border-slate-600/50 hover:border-cyan-400/50 transition-all backdrop-blur-sm"
+                className="glass-morphism-enhanced p-8 rounded-xl relative overflow-hidden group shadow-lg transition-all duration-300"
                 whileHover={{ 
-                  boxShadow: "0 8px 32px rgba(6, 182, 212, 0.15)",
-                  y: -5,
-                  transition: { duration: 0.3 }
+                  y: -4,
+                  boxShadow: "0 8px 32px 0 rgba(59,130,246,0.13), 0 1.5px 4px 0 rgba(0,0,0,0.10)"
                 }}
               >
-                <h3 className="text-xl md:text-2xl font-bold text-cyan-400 mb-6 font-mono">
-                  <span className="text-orange-400">$ </span>
-                  ./whoami --verbose
-                </h3>
-                <div className="space-y-4 text-slate-300 font-mono text-sm md:text-base leading-relaxed">
-                  <p className="break-words">
-                    <span className="text-emerald-400">&gt; </span>
-                    Engineering student at Abdelmalek Essaâdi University,
-                  </p>
-                  <p className="break-words">
-                    <span className="text-emerald-400">&gt; </span>
-                    specializing in software && intelligent systems.
-                  </p>
-                  <p className="break-words">
-                    <span className="text-emerald-400">&gt; </span>
-                    Journey: web.development → game.engines → AI.exploration
-                  </p>
-                  <p className="break-words">
-                    <span className="text-emerald-400">&gt; </span>
-                    Current focus: machine.learning && full.stack.mastery
-                  </p>
+                {/* Gradient accent matching other sections */}
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-blue-400 to-blue-300 opacity-70"></div>
+                
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-300 text-transparent bg-clip-text mb-4">Background</h3>
+                <div className="space-y-4 text-gray-300">
+                  <p>{personalInfo.about}</p>
+                  
+                  <div className="pt-4 flex flex-wrap gap-3">
+                    <div className="px-3 py-1 bg-blue-500/10 text-blue-300 rounded-full text-sm border border-blue-500/20">
+                      Looking for Internships
+                    </div>
+                    <div className="px-3 py-1 bg-blue-500/10 text-blue-300 rounded-full text-sm border border-blue-500/20">
+                      Open to Collaborations
+                    </div>
+                  </div>
                 </div>
               </motion.div>
 
-              {/* Achievements with footer-style design */}
+              {/* Highlights Section */}
               <motion.div 
-                className="p-6 md:p-8 rounded-xl relative overflow-hidden bg-slate-800/30 border border-slate-600/50 hover:border-emerald-400/50 transition-all backdrop-blur-sm"
+                className="glass-morphism-enhanced p-8 rounded-xl relative overflow-hidden group shadow-lg transition-all duration-300"
                 whileHover={{ 
-                  boxShadow: "0 8px 32px rgba(16, 185, 129, 0.15)",
-                  y: -5
+                  y: -4,
+                  boxShadow: "0 8px 32px 0 rgba(147, 51, 234, 0.13), 0 1.5px 4px 0 rgba(0,0,0,0.10)"
                 }}
+                transition={{ delay: 0.1 }}
               >
-                <h3 className="text-xl md:text-2xl font-bold text-emerald-400 mb-6 font-mono">
-                  <span className="text-orange-400">$ </span>
-                  ls -la ./achievements
-                </h3>
+                {/* Gradient accent */}
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-500 via-purple-400 to-purple-300 opacity-70"></div>
+                
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-purple-300 text-transparent bg-clip-text mb-4">Highlights</h3>
                 <ul className="space-y-3">
-                  {achievements.map((achievement, index) => (
+                  {highlights.map((highlight, index) => (
                     <motion.li
                       key={index}
-                      className="flex items-start gap-3 text-slate-300 group font-mono text-sm md:text-base"
+                      className="flex items-start gap-3 text-gray-300 group"
                       initial={{ opacity: 0, x: -20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.1 }}
                     >
-                      <motion.span 
-                        className="text-cyan-400 flex-shrink-0 mt-1"
-                        animate={{ opacity: [1, 0.5, 1] }}
-                        transition={{ duration: 2, repeat: Infinity, repeatDelay: index }}
-                      >
-                        •
-                      </motion.span>
-                      <span className="group-hover:text-cyan-400 transition-colors break-words leading-relaxed">{achievement}</span>
+                      <span className="text-purple-400 flex-shrink-0 mt-1.5">
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </span>
+                      <span className="group-hover:text-gray-200 transition-colors">{highlight}</span>
                     </motion.li>
                   ))}
                 </ul>
               </motion.div>
+              
+              {/* Activities Section */}
+              <motion.div 
+                className="glass-morphism-enhanced p-8 rounded-xl relative overflow-hidden group shadow-lg transition-all duration-300"
+                whileHover={{ 
+                  y: -4,
+                  boxShadow: "0 8px 32px 0 rgba(59,130,246,0.13), 0 1.5px 4px 0 rgba(0,0,0,0.10)"
+                }}
+                transition={{ delay: 0.2 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                {/* Gradient accent */}
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-blue-400 to-blue-300 opacity-70"></div>
+                
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-300 text-transparent bg-clip-text mb-5">Extracurricular Activities</h3>
+                <div className="space-y-5">
+                  {activities.map((activity, index) => (
+                    <ActivityCard key={index} activity={activity} index={index} />
+                  ))}
+                </div>
+              </motion.div>
             </motion.div>
 
-            {/* Right Column with enhanced entrance */}
+            {/* Right Column - Qualities and Education */}
             <motion.div
               className="space-y-8"
-              initial={{ opacity: 0, x: 80 }}
+              initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 1, type: "spring", stiffness: 100 }}
+              transition={{ duration: 0.5 }}
             >
-              {/* Skills with footer-style grid */}
+              {/* Qualities Grid */}
               <motion.div 
-                className="p-6 md:p-8 rounded-xl relative overflow-hidden bg-slate-800/30 border border-slate-600/50 hover:border-purple-400/50 transition-all backdrop-blur-sm"
+                className="glass-morphism-enhanced p-8 rounded-xl relative overflow-hidden group shadow-lg transition-all duration-300"
                 whileHover={{ 
-                  boxShadow: "0 8px 32px rgba(147, 51, 234, 0.15)",
-                  y: -5
+                  y: -4,
+                  boxShadow: "0 8px 32px 0 rgba(59,130,246,0.13), 0 1.5px 4px 0 rgba(0,0,0,0.10)"
                 }}
               >
-                <h3 className="text-xl md:text-2xl font-bold text-purple-400 mb-6 font-mono">
-                  <span className="text-orange-400">$ </span>
-                  ./skills --list --core
-                </h3>
-                <div className="grid grid-cols-1 gap-4">
-                  {qualities.map((quality, index) => (
-                    <motion.div
-                      key={index}
-                      className="bg-slate-800/50 p-4 rounded-lg group/item border border-slate-600/30 hover:border-cyan-400/50 transition-all"
-                      whileHover={{ 
-                        scale: 1.02,
-                        boxShadow: "0 4px 16px rgba(6, 182, 212, 0.15)"
-                      }}
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1, duration: 0.5 }}
-                    >
-                      <div className="flex items-start gap-3">
-                        <div className="text-cyan-400 flex-shrink-0 mt-1">
-                          {quality.icon}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className="text-base md:text-lg font-semibold text-cyan-300 mb-1 group-hover/item:text-emerald-400 transition-colors font-mono">
-                            {quality.title}
-                          </h4>
-                          <p className="text-sm text-slate-400 group-hover/item:text-slate-300 transition-colors font-mono break-words">
-                            {quality.description}
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
+                {/* Gradient accent */}
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-blue-400 to-blue-300 opacity-70"></div>
+                
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-300 text-transparent bg-clip-text mb-5">Key Qualities</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {qualityTraits.map((quality, index) => (
+                    <QualityCard key={index} quality={quality} index={index} />
                   ))}
                 </div>
               </motion.div>
 
-              {/* Education with footer-style design */}
+              {/* Education Section */}
               <motion.div 
-                className="p-6 md:p-8 rounded-xl relative overflow-hidden bg-slate-800/30 border border-slate-600/50 hover:border-orange-400/50 transition-all backdrop-blur-sm"
+                className="glass-morphism-enhanced p-8 rounded-xl relative overflow-hidden shadow-lg transition-all duration-300"
                 whileHover={{ 
-                  boxShadow: "0 8px 32px rgba(251, 146, 60, 0.15)",
-                  y: -5
+                  y: -4,
+                  boxShadow: "0 8px 32px 0 rgba(59,130,246,0.13), 0 1.5px 4px 0 rgba(0,0,0,0.10)"
                 }}
                 transition={{ delay: 0.1 }}
               >
-                <h3 className="text-xl md:text-2xl font-bold text-orange-400 mb-6 font-mono">
-                  <span className="text-cyan-400">$ </span>
-                  cat ./education.log
-                </h3>
-                <div className="space-y-4 text-slate-300 font-mono text-sm md:text-base leading-relaxed">
+                {/* Gradient accent */}
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-500 via-purple-400 to-purple-300 opacity-70"></div>
+                
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-purple-300 text-transparent bg-clip-text mb-4">Education</h3>
+                <div className="space-y-3 text-gray-300">
                   <motion.p 
-                    className="font-semibold text-cyan-300 break-words"
+                    className="font-semibold text-lg"
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.2 }}
                   >
-                    <span className="text-orange-400">&gt; </span>
-                    Engineering in Software && Intelligent Systems
+                    {education.degree}
                   </motion.p>
                   <motion.p 
-                    className="break-words"
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
                   >
-                    <span className="text-emerald-400">&gt; </span>
-                    Abdelmalek Essaâdi University, Tétouan
+                    {education.institution}, {education.location}
                   </motion.p>
                   <motion.div
-                    className="flex items-center gap-2 flex-wrap" 
+                    className="flex items-center gap-2" 
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
                   >
-                    <span className="text-purple-400">&gt; </span>
-                    <svg className="w-5 h-5 text-orange-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    <span className="text-orange-400">2022 - 2027 (Expected)</span>
+                    <span className="text-blue-400">{education.period} (Expected)</span>
                   </motion.div>
                 </div>
               </motion.div>
+              
+              {/* Languages Card */}
+              <motion.div 
+                className="glass-morphism-enhanced p-8 rounded-xl relative overflow-hidden shadow-lg transition-all duration-300"
+                whileHover={{ 
+                  y: -4,
+                  boxShadow: "0 8px 32px 0 rgba(59,130,246,0.13), 0 1.5px 4px 0 rgba(0,0,0,0.10)"
+                }}
+              >
+                {/* Gradient accent */}
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-500 via-blue-400 to-blue-300 opacity-70"></div>
+                
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-blue-300 text-transparent bg-clip-text mb-5">Languages</h3>
+                <div className="space-y-3">
+                  {personalInfo.languages && personalInfo.languages.map((lang, i) => (
+                    <div key={i} className="flex justify-between items-center">
+                      <span className="text-gray-300">{lang.name}</span>
+                      <span className="text-sm text-blue-400 bg-blue-500/10 px-3 py-1 rounded-full border border-blue-500/20">
+                        {lang.level}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* NEW: Skills Overview Card */}
+              <motion.div 
+                className="glass-morphism-enhanced p-8 rounded-xl relative overflow-hidden shadow-lg transition-all duration-300"
+                whileHover={{ 
+                  y: -4,
+                  boxShadow: "0 8px 32px 0 rgba(59,130,246,0.13), 0 1.5px 4px 0 rgba(0,0,0,0.10)"
+                }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+              >
+                {/* Gradient accent */}
+                <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-green-500 via-green-400 to-green-300 opacity-70"></div>
+                
+                <h3 className="text-2xl font-bold bg-gradient-to-r from-green-400 to-green-300 text-transparent bg-clip-text mb-5">Interests & Goals</h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-green-500/10 p-2 rounded-lg text-green-400 flex-shrink-0">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-medium text-green-300 mb-1">AI & Machine Learning</h4>
+                      <p className="text-gray-400 text-sm">Exploring applications of neural networks and reinforcement learning in healthcare systems</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <div className="bg-green-500/10 p-2 rounded-lg text-green-400 flex-shrink-0">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-medium text-green-300 mb-1">Research Goals</h4>
+                      <p className="text-gray-400 text-sm">Contributing to research projects in embedded systems and IoT solutions</p>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </motion.div>
       </div>
-
-      {/* Smooth transition zone to next section */}
-      <motion.div
-        className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-slate-900/50 pointer-events-none"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ delay: 1.5, duration: 1 }}
-      />
-    </motion.div>
+    </section>
   );
 }
 

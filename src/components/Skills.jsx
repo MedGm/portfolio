@@ -1,337 +1,230 @@
-import { motion } from 'framer-motion';
 import { useState, useMemo } from 'react';
+import { motion } from 'framer-motion';
+import { skills } from '../data/portfolioData';
+import IconProvider from './utils/IconProvider';
 import { techIcons } from '../utils/iconUrls';
 
 function Skills() {
-  const [activeCategory, setActiveCategory] = useState('all');
-
-  // Terminal-themed skills data using only icons from iconUrls.js
-  const skillsData = useMemo(() => ({
-    frontend: [
-      { name: 'HTML5', level: 95, icon: techIcons.html5, command: 'vim index.html' },
-      { name: 'CSS3', level: 90, icon: techIcons.css3, command: 'sass --watch styles.scss' },
-      { name: 'JavaScript', level: 88, icon: techIcons.javascript, command: 'node app.js' },
-      { name: 'TypeScript', level: 85, icon: techIcons.typescript, command: 'tsc --init' },
-      { name: 'React', level: 90, icon: techIcons.react, command: 'npm install react' },
-      { name: 'Angular', level: 75, icon: techIcons.angular, command: 'ng new project' },
-      { name: 'Bootstrap', level: 80, icon: techIcons.bootstrap, command: 'npm i bootstrap' },
-      { name: 'Tailwind CSS', level: 95, icon: techIcons.tailwind, command: 'npm i tailwindcss' }
-    ],
-    backend: [
-      { name: 'Python', level: 85, icon: techIcons.python, command: 'python app.py' },
-      { name: 'Java', level: 70, icon: techIcons.java, command: 'javac Main.java' },
-      { name: 'C++', level: 75, icon: techIcons.cpp, command: 'g++ -o main main.cpp' },
-      { name: 'Node.js', level: 85, icon: techIcons.nodejs, command: 'node server.js' },
-      { name: 'Express.js', level: 80, icon: techIcons.expressjs, command: 'npm i express' },
-      { name: 'Symfony', level: 75, icon: techIcons.symfony, command: 'symfony new project' }
-    ],
-    tools: [
-      { name: 'Git', level: 90, icon: techIcons.git, command: 'git init' },
-      { name: 'GitHub', level: 85, icon: techIcons.github, command: 'git push origin main' },
-      { name: 'VS Code', level: 95, icon: techIcons.vscode, command: 'code .' },
-      { name: 'IntelliJ', level: 80, icon: techIcons.intellij, command: 'idea .' },
-      { name: 'Unity', level: 70, icon: techIcons.unity, command: 'unity -projectPath .' }
-    ]
-  }), []);
-
-  const categories = [
-    { id: 'all', label: 'ls -la', icon: '📁' },
-    { id: 'frontend', label: './frontend', icon: '🌐' },
-    { id: 'backend', label: './backend', icon: '⚙️' },
-    { id: 'tools', label: './tools', icon: '🛠️' }
-  ];
-
-  const getFilteredSkills = () => {
-    if (activeCategory === 'all') {
-      return Object.entries(skillsData).flatMap(([category, skills]) =>
-        skills.map(skill => ({ ...skill, category }))
-      );
+  const normalizedCategories = useMemo(() => [
+    {
+      name: "Web & Database",
+      color: "from-blue-500 to-cyan-400",
+      icon: "web",
+      skills: [
+        "HTML5", "CSS3", "MySQL", "PostgreSQL", "MongoDB", "REST APIs", "Node.js"
+      ]
+    },
+    {
+      name: "Frameworks and Libraries",
+      color: "from-purple-500 to-pink-500",
+      icon: "frameworks",
+      skills: [
+        "React", "Angular", "Symfony", "Laravel", "Express.js", "Bootstrap", "Tailwind CSS"
+      ]
+    },
+    {
+      name: "Languages & Dev Tools",
+      color: "from-green-500 to-emerald-400",
+      icon: "languages",
+      skills: [
+        "JavaScript", "TypeScript", "Java", "Python", "PHP", "Arduino", "Bash", "Git", "GitHub", "VS Code", "IntelliJ", "Unity"
+      ]
+    },
+    {
+      name: "Engineering & Systems",
+      color: "from-orange-500 to-red-500",
+      icon: "systems",
+      skills: [
+        "UML", "Design Patterns", "Linux (Ubuntu)", "Embedded Systems"
+      ]
     }
-    return skillsData[activeCategory]?.map(skill => ({ ...skill, category: activeCategory })) || [];
+  ], []);
+
+  const getIconUrl = (skillName) => {
+    const map = {
+      "HTML5": "html5",
+      "CSS3": "css3",
+      "JavaScript": "javascript",
+      "TypeScript": "typescript",
+      "Node.js": "nodejs",
+      "Express.js": "expressjs",
+      "GitHub": "github",
+      "VS Code": "vscode",
+      "IntelliJ": "intellij",
+      "Linux (Ubuntu)": "linux",
+      "Tailwind CSS": "tailwindcss",
+      "Design Patterns": "designpatterns",
+      "UML": "uml",
+      "Laravel": "laravel",
+      "Symfony": "symfony",
+      "Bootstrap": "bootstrap",
+      "Unity": "unity",
+      "Arduino": "arduino",
+      "Bash": "bash",
+      "Git": "git",
+      "MySQL": "mysql",
+      "PostgreSQL": "postgresql",
+      "MongoDB": "mongodb",
+      "PHP": "php",
+      "Java": "java",
+      "Python": "python",
+      "React": "react",
+      "Angular": "angular",
+      "Embedded Systems": "raspberry"
+    };
+    const key = map[skillName] || skillName.toLowerCase().replace(/[\s+#.()]/g, '');
+    if (key === "uml" && typeof techIcons.uml === "string" && techIcons.uml.startsWith("<svg")) {
+      return null;
+    }
+    return techIcons[key] || null;
   };
 
-  const filteredSkills = getFilteredSkills();
+  const [openCategory, setOpenCategory] = useState(null);
 
   return (
-    <section id="skills" className="min-h-screen py-28 relative overflow-hidden select-none bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
-      {/* Enhanced background effects */}
-      <div className="absolute inset-0 -z-10">
-        {/* Enhanced matrix grid */}
-        <div className="absolute inset-0 opacity-[0.03]">
+    <section id="skills" className="min-h-screen pt-20 pb-16 select-none relative">
+      {/* Subtle gradient top border */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-blue-500/0 via-blue-500/50 to-purple-500/0"></div>
+      
+      {/* Enhanced Background Elements */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        {/* Base gradient */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 via-slate-900/95 to-slate-900/90" />
+        
+        {/* Static grid background */}
+        <div className="absolute inset-0 opacity-20">
           <div className="h-full w-full" 
             style={{ 
-              backgroundImage: `linear-gradient(to right, rgba(6, 182, 212, 0.3) 1px, transparent 1px),
-                               linear-gradient(to bottom, rgba(6, 182, 212, 0.3) 1px, transparent 1px)`, 
+              backgroundImage: `radial-gradient(rgba(59, 130, 246, 0.15) 1px, transparent 1px)`, 
               backgroundSize: '40px 40px'
             }}
           />
         </div>
         
-        {/* Enhanced floating code particles */}
-        {[...Array(12)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 rounded-full"
-            style={{
-              background: i % 4 === 0 ? '#06b6d4' : i % 4 === 1 ? '#10b981' : i % 4 === 2 ? '#8b5cf6' : '#f59e0b',
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              boxShadow: `0 0 20px ${i % 4 === 0 ? '#06b6d4' : i % 4 === 1 ? '#10b981' : i % 4 === 2 ? '#8b5cf6' : '#f59e0b'}`,
-            }}
-            animate={{
-              y: [0, -60, 0],
-              opacity: [0.4, 1, 0.4],
-              scale: [1, 1.3, 1],
-              rotate: [0, 180, 360]
-            }}
-            transition={{
-              duration: 15 + i * 2,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 1.5,
-            }}
-          />
-        ))}
-        
-        {/* Enhanced scan lines */}
-        <motion.div
-          className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-60"
-          animate={{ x: [-200, typeof window !== 'undefined' ? window.innerWidth + 200 : 1200] }}
-          transition={{ 
-            duration: 20, 
-            repeat: Infinity, 
-            repeatType: "loop",
-            ease: "linear" 
-          }}
-        />
-        
-        <motion.div
-          className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent opacity-40"
-          animate={{ x: [typeof window !== 'undefined' ? window.innerWidth + 200 : 1200, -200] }}
-          transition={{ 
-            duration: 25, 
-            repeat: Infinity, 
-            repeatType: "loop",
-            ease: "linear" 
-          }}
-        />
+        {/* Decorative background elements */}
+        <div className="absolute top-1/4 -right-[10%] w-[40%] h-[40%] bg-blue-500/5 rounded-full filter blur-3xl"></div>
+        <div className="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-purple-500/5 rounded-full filter blur-3xl"></div>
+        <div className="absolute left-1/4 bottom-1/3 w-[30%] h-[30%] bg-indigo-500/5 rounded-full filter blur-3xl"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Enhanced header */}
-        <motion.div 
-          className="text-center space-y-6 mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.7 }}
-        >
-          <motion.h2 
-            className="text-4xl md:text-5xl font-bold relative inline-block font-mono"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <span className="text-orange-400">$ </span>
-            <span className="bg-gradient-to-r from-cyan-400 via-emerald-400 to-purple-400 bg-clip-text text-transparent">
-              ./skills --list --all
-            </span>
-            <span className="text-cyan-400 animate-pulse">_</span>
-            
-            <motion.div 
-              className="absolute -bottom-2 left-0 right-0 h-1 rounded-full bg-gradient-to-r from-cyan-500 via-emerald-500 to-purple-500"
-              initial={{ scaleX: 0, originX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-            />
-          </motion.h2>
-          
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto font-mono">
-            <span className="text-cyan-400"># </span>
-            Technologies and tools I use to bring ideas to life
-          </p>
-        </motion.div>
-
-        {/* Enhanced category filter */}
-        <motion.div 
-          className="flex flex-wrap justify-center gap-4 mb-12"
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
+          transition={{ duration: 0.7 }}
+          className="space-y-10"
         >
-          {categories.map((category) => (
-            <motion.button
-              key={category.id}
-              onClick={() => setActiveCategory(category.id)}
-              className={`px-6 py-3 rounded-lg font-mono text-sm transition-all duration-300 border-2 flex items-center gap-2 ${
-                activeCategory === category.id
-                  ? 'bg-gradient-to-r from-cyan-500 to-emerald-500 text-white border-cyan-400 shadow-lg shadow-cyan-500/25'
-                  : 'bg-slate-800/50 text-slate-300 border-slate-600/50 hover:border-cyan-400/50 hover:text-cyan-300 hover:bg-slate-800/70'
-              }`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+          <div className="text-center space-y-4">
+            <motion.h2 
+              className="text-4xl md:text-5xl font-bold relative inline-block"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
             >
-              <span className="text-lg">{category.icon}</span>
-              <span>
-                <span className="text-orange-400">$ </span>
-                {category.label}
+              <span className="bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text">
+                Skills & Technologies
               </span>
-            </motion.button>
-          ))}
-        </motion.div>
-
-        {/* Enhanced skills grid with fixed rendering */}
-        <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-          layout
-          key={activeCategory} // Force re-render when category changes
-        >
-          {filteredSkills.map((skill, index) => (
-            <SkillCard 
-              key={`${skill.category}-${skill.name}-${index}`} 
-              skill={skill} 
-              index={index} 
-            />
-          ))}
-        </motion.div>
-
-        {/* Enhanced terminal output */}
-        <motion.div
-          className="mt-16 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5 }}
-        >
-          <div className="inline-block p-6 rounded-xl bg-slate-800/30 border border-slate-600/50 backdrop-blur-sm">
-            <p className="text-slate-400 font-mono mb-2">
-              <span className="text-cyan-400">$ </span>
-              echo "Skills loaded: {filteredSkills.length} technologies"
+              <motion.div 
+                className="absolute -bottom-2 left-0 right-0 h-1 rounded-full bg-gradient-to-r from-blue-500 to-purple-600"
+                initial={{ scaleX: 0, originX: 0 }}
+                whileInView={{ scaleX: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 0.8 }}
+              />
+            </motion.h2>
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              A comprehensive overview of my technical expertise, frameworks, and tools.
             </p>
-            <p className="text-slate-500 font-mono text-sm">
-              <span className="text-orange-400"># </span>
-              Always learning, always growing...
-            </p>
-            <motion.div
-              className="mt-3 flex items-center justify-center space-x-1"
-              animate={{ opacity: [1, 0.5, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              {[...Array(3)].map((_, i) => (
-                <div
-                  key={i}
-                  className="w-2 h-2 bg-cyan-400 rounded-full"
-                  style={{ 
-                    animationDelay: `${i * 0.2}s`,
-                    animation: 'pulse 1.5s infinite'
-                  }}
-                />
-              ))}
-            </motion.div>
+          </div>
+
+          {/* Skills by Category */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {normalizedCategories.map((cat, idx) => (
+              <motion.div
+                key={cat.name}
+                className="glass-morphism-enhanced p-7 rounded-2xl relative overflow-hidden group shadow-lg transition-all duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                whileHover={{
+                  y: -4,
+                  boxShadow: "0 8px 32px 0 rgba(59,130,246,0.13), 0 1.5px 4px 0 rgba(0,0,0,0.10)"
+                }}
+              >
+                <div className={`absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r ${cat.color} opacity-80`}></div>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    {cat.icon && <IconProvider icon={cat.icon} className="w-6 h-6 text-blue-400" />}
+                    <h3 className="text-xl font-bold text-white">{cat.name}</h3>
+                  </div>
+                  <button
+                    className="text-blue-400 focus:outline-none"
+                    onClick={() => setOpenCategory(openCategory === cat.name ? null : cat.name)}
+                    aria-label={openCategory === cat.name ? "Collapse" : "Expand"}
+                  >
+                    <motion.svg
+                      className="w-5 h-5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      animate={{ rotate: openCategory === cat.name ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </motion.svg>
+                  </button>
+                </div>
+                <motion.div
+                  className="grid grid-cols-2 sm:grid-cols-3 gap-3"
+                  animate={{ height: openCategory === cat.name ? 'auto' : 'auto' }}
+                >
+                  {cat.skills.slice(0, openCategory === cat.name ? cat.skills.length : 8).map((skill, skillIdx) => (
+                    <motion.div
+                      key={skill}
+                      className="flex items-center gap-2 p-2 rounded-lg bg-slate-800/60 border border-slate-700/40 group/skill transition-all duration-200"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ delay: skillIdx * 0.03 }}
+                      whileHover={{ 
+                        scale: 1.04,
+                        backgroundColor: "rgba(59, 130, 246, 0.13)",
+                        borderColor: "rgba(59, 130, 246, 0.18)"
+                      }}
+                    >
+                      {skill === "UML" && typeof techIcons.uml === "string" && techIcons.uml.startsWith("<svg") ? (
+                        <span
+                          className="w-5 h-5"
+                          dangerouslySetInnerHTML={{ __html: techIcons.uml }}
+                        />
+                      ) : getIconUrl(skill) ? (
+                        <img src={getIconUrl(skill)} alt={skill} className="w-5 h-5" />
+                      ) : (
+                        <IconProvider icon={skill.toLowerCase().replace(/[^a-z0-9]/g, '')} className="w-5 h-5 text-blue-400" />
+                      )}
+                      <span className="text-sm text-gray-300 group-hover/skill:text-blue-300 transition-colors">
+                        {skill}
+                      </span>
+                    </motion.div>
+                  ))}
+                </motion.div>
+                {/* Show more indicator */}
+                {cat.skills.length > 8 && openCategory !== cat.name && (
+                  <div className="mt-3 text-center">
+                    <span className="text-xs text-gray-400">
+                      +{cat.skills.length - 8} more
+                    </span>
+                  </div>
+                )}
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </div>
     </section>
-  );
-}
-
-// Enhanced Skill Card Component with fixed rendering
-function SkillCard({ skill, index }) {
-  return (
-    <motion.div
-      className="group relative"
-      initial={{ opacity: 0, y: 30, scale: 0.9 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, margin: "-50px", amount: 0.3 }}
-      transition={{ 
-        duration: 0.5, 
-        delay: index * 0.1,
-        type: "spring",
-        stiffness: 100,
-        damping: 15
-      }}
-      whileHover={{ 
-        y: -8,
-        transition: { duration: 0.2 }
-      }}
-    >
-      <motion.div
-        className="bg-slate-800/30 rounded-xl p-6 border border-slate-600/50 hover:border-cyan-400/50 transition-all duration-300 backdrop-blur-sm h-full"
-        whileHover={{ 
-          boxShadow: "0 20px 40px rgba(6, 182, 212, 0.15)",
-          borderColor: "rgba(6, 182, 212, 0.5)"
-        }}
-      >
-        {/* Skill header */}
-        <div className="flex items-center gap-4 mb-4">
-          {/* Enhanced skill icon */}
-          <div className="relative">
-            <motion.div
-              className="w-12 h-12 flex items-center justify-center rounded-lg bg-gradient-to-br from-slate-700 to-slate-800 border border-slate-600/50 group-hover:border-cyan-400/50 transition-all"
-              whileHover={{ scale: 1.1, rotate: 5 }}
-            >
-              <img
-                src={skill.icon}
-                alt={skill.name}
-                className="w-8 h-8 object-contain filter brightness-110 group-hover:brightness-125 transition-all"
-                style={{ 
-                  filter: 'drop-shadow(0 0 8px rgba(6, 182, 212, 0.3))'
-                }}
-              />
-            </motion.div>
-            
-            {/* Enhanced glow effect */}
-            <motion.div
-              className="absolute inset-0 rounded-lg bg-cyan-400/20 blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              animate={{
-                scale: [1, 1.1, 1],
-                opacity: [0.5, 0.8, 0.5]
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                repeatType: "reverse"
-              }}
-            />
-          </div>
-
-          {/* Skill info */}
-          <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-bold text-cyan-300 group-hover:text-cyan-400 transition-colors font-mono mb-1">
-              {skill.name}
-            </h3>
-            <p className="text-sm text-slate-500 group-hover:text-slate-400 transition-colors font-mono">
-              <span className="text-orange-400">$ </span>
-              {skill.command}
-            </p>
-          </div>
-        </div>
-
-        {/* Removed proficiency indicator */}
-
-        {/* Enhanced hover effect overlay */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-emerald-500/5 rounded-xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-        />
-        
-        {/* Terminal scan line effect */}
-        <motion.div
-          className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-0 group-hover:opacity-100"
-          animate={{
-            x: [-100, 100]
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            repeatType: "loop",
-            ease: "linear"
-          }}
-        />
-      </motion.div>
-    </motion.div>
   );
 }
 

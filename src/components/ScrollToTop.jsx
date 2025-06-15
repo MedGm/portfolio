@@ -6,22 +6,14 @@ function ScrollToTop() {
 
   useEffect(() => {
     const toggleVisibility = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
+      setIsVisible(window.scrollY > 400);
     };
-
     window.addEventListener('scroll', toggleVisibility);
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
@@ -29,53 +21,26 @@ function ScrollToTop() {
       {isVisible && (
         <motion.button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 p-4 rounded-xl focus:outline-none font-mono border-2 border-cyan-400/30 hover:border-cyan-400 shadow-lg hover:shadow-cyan-500/25 group"
-          initial={{ opacity: 0, scale: 0.5, y: 20 }}
+          className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-900/20 focus:outline-none transition-all duration-200"
+          initial={{ opacity: 0, scale: 0.7, y: 40 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.5, y: 20 }}
-          transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          whileHover={{ 
-            scale: 1.1,
-            boxShadow: "0 10px 40px rgba(6, 182, 212, 0.4)"
-          }}
-          whileTap={{ scale: 0.9 }}
+          exit={{ opacity: 0, scale: 0.7, y: 40 }}
+          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          whileHover={{ scale: 1.08, filter: "brightness(1.15)" }}
+          whileTap={{ scale: 0.95 }}
           aria-label="Scroll to top"
         >
-          {/* Enhanced content */}
-          <div className="flex items-center gap-2">
-            <span className="text-white text-xs">$</span>
-            <span className="text-white text-xs hidden sm:inline">top</span>
-            
-            {/* Enhanced arrow */}
-            <motion.svg 
-              className="w-5 h-5 text-white" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              stroke="currentColor"
-              animate={{ y: [0, -3, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-            </motion.svg>
-          </div>
-          
-          {/* Enhanced scan line effect */}
-          <motion.div 
-            className="absolute inset-0 -z-10 rounded-xl overflow-hidden"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
+          {/* Arrow up icon with subtle up-down animation */}
+          <motion.svg 
+            className="w-6 h-6" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor"
+            animate={{ y: [0, -4, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <motion.div 
-              className="absolute top-0 left-0 right-0 h-px bg-white/30"
-              animate={{ x: [-100, 100] }}
-              transition={{ 
-                duration: 2, 
-                repeat: Infinity, 
-                repeatType: "loop",
-                ease: "linear" 
-              }}
-            />
-          </motion.div>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+          </motion.svg>
         </motion.button>
       )}
     </AnimatePresence>
