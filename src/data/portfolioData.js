@@ -80,7 +80,7 @@ export const projects = [
     title: "EEG Seizure Detection System",
     description: "A real-time epileptic seizure detection system using EEG signals that processes data via MQTT, applies machine learning for prediction, and displays results through an interactive web interface.",
     techStack: ["Python", "Flask", "Node-RED", "MQTT", "TensorFlow", "Socket.IO"],
-    link: "https://github.com/ScienceWeek02/final-work",
+    link: "https://github.com/MedGm/EEG-Seizure-Detection-System",
     image: "/eeg.png",
     features: [
       "Real-time EEG data processing via MQTT",
