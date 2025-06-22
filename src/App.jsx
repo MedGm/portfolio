@@ -4,6 +4,7 @@ import { personalInfo, siteMetadata } from './data/portfolioData';
 import Navbar from './components/Navbar';
 import LoadingScreen from './components/LoadingScreen';
 import ErrorBoundary from './components/ErrorBoundary';
+import PortfolioChatbot from './components/PortfolioChatbot';
 
 // Lazy load components for better performance
 const Home = lazy(() => import('./components/Home'));
@@ -341,7 +342,9 @@ function App() {
           <Suspense fallback={<div className="h-20"></div>}>
             <Footer />
           </Suspense>
+          <PortfolioChatbot />
           
+          {/* Custom cursor */}
           <Suspense fallback={null}>
             <ScrollToTop />
           </Suspense>

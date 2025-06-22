@@ -84,12 +84,7 @@ function Home() {
   );
 
   return (
-    <motion.div
-      ref={containerRef}
-      id="home"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden"
-      style={{ opacity, scale, y }}
-    >
+    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Subtle gradient top border */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-blue-500/0 via-blue-500/50 to-purple-500/0"></div>
       
@@ -199,7 +194,7 @@ function Home() {
               </motion.div>
             </div>
 
-            {/* CTA Buttons with simplified hover effect */}
+            {/* CTA Buttons with View CV */}
             <motion.div
               className="flex flex-wrap items-center justify-center gap-4 sm:gap-5 pt-4"
               initial={{ opacity: 0, y: 20 }}
@@ -247,6 +242,23 @@ function Home() {
                   </span>
                 </motion.a>
               ))}
+              {/* View CV Button */}
+              <motion.a
+                href="/cv.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group px-6 sm:px-7 py-3 sm:py-3.5 min-w-[140px] sm:min-w-[160px] relative overflow-hidden flex items-center justify-center rounded-full shadow-md bg-gradient-to-r from-green-500 via-blue-500 to-purple-600 text-white font-semibold"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.1 }}
+              >
+                <span className="relative z-10 text-base sm:text-lg flex items-center">
+                  View CV
+                  <svg className="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                </span>
+              </motion.a>
             </motion.div>
 
             {/* Social Links with simplified hover */}
@@ -298,7 +310,7 @@ function Home() {
           </svg>
         </motion.div>
       </div>
-    </motion.div>
+    </section>
   );
 }
 
