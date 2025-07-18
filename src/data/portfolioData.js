@@ -75,9 +75,9 @@ export const skills = {
 };
 
 export const projects = [
-   {
-    id: "eeg-detection",
-    title: "EEG Seizure Detection System",
+  {
+   id: "eeg-detection",
+   title: "EEG Seizure Detection System",
     description: "A real-time epileptic seizure detection system using EEG signals that processes data via MQTT, applies machine learning for prediction, and displays results through an interactive web interface.",
     techStack: ["Python", "Flask", "Node-RED", "MQTT", "TensorFlow", "Socket.IO"],
     link: "https://github.com/MedGm/EEG-Seizure-Detection-System",
@@ -128,20 +128,22 @@ export const projects = [
     status: "Completed"
   },
   { 
-    id: "department-management",
-    title: "Conception et Gestion du Département Génie Informatique",
-    description: "A comprehensive department management system for computer engineering faculty, facilitating administrative workflows and student management.",
-    techStack: ["React", "Dexie.js"],
-    link: "https://github.com/DustWinter/Hone",
-    image: "/department.png",
+    id: "codehaven",
+    title: "CodeHaven",
+    description: "CodeHaven, a comprehensive web application built for devs using Spring Boot and Angular, powered by Groq API.",
+    techStack: ["Spring Boot", "Angular", "PostgreSQL", "Groq API"],
+    link: "https://github.com/MedGm/CodeHaven",
+    image: "/codehaven.png",
     features: [
-      "Faculty member management",
-      "Student enrollment tracking",
-      "Course scheduling",
-      "Administrative dashboard",
-      "Academic performance analytics"
+    // Project Management
+    "Create, organize, and manage coding projects",
+    "Create and publish technical blog posts",
+    "Share code snippets with the community",
+    "AI-powered code review and suggestions",
+    "Intelligent bug detection and fixing recommendations",
+    "Dynamic user profiles"
     ],
-    category: "Academic",
+    category: "Personal",
     year: "2025",
     status: "Completed"
   }
