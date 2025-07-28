@@ -93,22 +93,49 @@ export const projects = [
     year: "2025",
     status: "Completed"
   },
-  {
-    id: "gamehaven",
-    title: "GameHaven",
-    description: "A feature-rich video game marketplace built with Symfony and React. Implements user authentication, game listings, reviews, and a sophisticated search system.",
-    techStack: ["React", "Symfony", "PostgreSQL", "Postman"],
-    link: "https://github.com/MedGm/GameHaven",
-    image: "/gamehaven.png",
+{ 
+    id: "codehaven",
+    title: "CodeHaven",
+    description: "CodeHaven, a comprehensive web application built for devs using Spring Boot and Angular, powered by Groq API.",
+    techStack: ["Spring Boot", "Angular", "PostgreSQL", "Groq API"],
+    link: "https://github.com/MedGm/CodeHaven",
+    image: "/codehaven.png",
     features: [
-      "User authentication and profiles",
-      "Game searching and filtering",
-      "Review and rating system",
-      "Responsive design"
+    // Project Management
+    "Create, organize, and manage coding projects",
+    "Create and publish technical blog posts",
+    "Share code snippets with the community",
+    "AI-powered code review and suggestions",
+    "Intelligent bug detection and fixing recommendations",
+    "Dynamic user profiles"
     ],
-    category: "Academic",
+    category: "Personal",
     year: "2025",
     status: "Completed"
+  },
+  {
+    id: "babygpt-storyteller",
+    title: "BabyGPT Storyteller",
+    description: "A fine-tuned GPT-2 model that generates safe, engaging stories for children. Trained on TinyStories with Hugging Face Transformers, achieving 0.867 BERTScore for story quality. Enables children's book content generation, interactive educational tools, and bedtime story creation.",
+    techStack: ["Python", "Hugging Face Transformers", "Google Colab", "GPT-2", "TinyStories"],
+    link: "https://github.com/MedGm/BabyGPT-Storyteller",
+    image: "/babygpt.png",
+    features: [
+      "Fine-tuned GPT-2 for child-safe storytelling",
+      "Trained in 1.5 hours on Google Colab T4 GPU",
+      "Used TinyStories dataset and Hugging Face Transformers",
+      "Achieved 0.867 BERTScore for quality",
+      "Sample: 'The little fox who loved exploring discovered a magical acorn that grew into a treehouse for all forest friends.'",
+      "Practical uses: children's books, educational tools, bedtime stories"
+    ],
+    category: "Personal",
+    year: "2024",
+    status: "Completed",
+    resources: {
+      github: "https://github.com/MedGm/BabyGPT-Storyteller",
+      huggingface: "https://huggingface.co/MedGm/BabyGPT-Storyteller",
+      colab: "https://colab.research.google.com/drive/1v8w2frxV"
+    }
   },
   {
     id: "tarl-game",
@@ -127,23 +154,20 @@ export const projects = [
     year: "2025",
     status: "Completed"
   },
-  { 
-    id: "codehaven",
-    title: "CodeHaven",
-    description: "CodeHaven, a comprehensive web application built for devs using Spring Boot and Angular, powered by Groq API.",
-    techStack: ["Spring Boot", "Angular", "PostgreSQL", "Groq API"],
-    link: "https://github.com/MedGm/CodeHaven",
-    image: "/codehaven.png",
+  {
+    id: "gamehaven",
+    title: "GameHaven",
+    description: "A feature-rich video game marketplace built with Symfony and React. Implements user authentication, game listings, reviews, and a sophisticated search system.",
+    techStack: ["React", "Symfony", "PostgreSQL", "Postman"],
+    link: "https://github.com/MedGm/GameHaven",
+    image: "/gamehaven.png",
     features: [
-    // Project Management
-    "Create, organize, and manage coding projects",
-    "Create and publish technical blog posts",
-    "Share code snippets with the community",
-    "AI-powered code review and suggestions",
-    "Intelligent bug detection and fixing recommendations",
-    "Dynamic user profiles"
+      "User authentication and profiles",
+      "Game searching and filtering",
+      "Review and rating system",
+      "Responsive design"
     ],
-    category: "Personal",
+    category: "Academic",
     year: "2025",
     status: "Completed"
   }
